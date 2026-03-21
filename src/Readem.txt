@@ -1,7 +1,0 @@
-- Revit.Claude.Bridge.Mcp.Server: this folder contain the Claude files to create the mcpb extension 
--- install mcpb packager: npm install -g @anthropic-ai/mcpb
--- CD the folder and call: mcpb pack
-
-- RoslynWorker: Is simple C# script compiler. This was separated from RevitClaudeBridge to avoid exception when other Microsoft.CodeAnalysis version is already loaded.
-
-- RevitClaudeBridge: this is the plugin and the tool provider
