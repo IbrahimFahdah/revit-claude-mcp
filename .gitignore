@@ -82,3 +82,4 @@ Desktop.ini
 *.mcpb
 !src/Connector.Mcp.Server/*.mcpb
 *.zip
+/todo.local.txt

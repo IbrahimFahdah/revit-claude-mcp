@@ -72,7 +72,3 @@ mcpb pack
 Full documentation at **https://ibrahimfahdah.github.io/revit-claude-mcp/**
 
 ---
-
-## License
-
-MIT
