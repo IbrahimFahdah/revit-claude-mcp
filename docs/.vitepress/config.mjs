@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'Claude–Revit AI Connector',
   description: 'Open source MCP bridge between Claude AI and Autodesk Revit',
+  base: '/revit-claude-mcp/',
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/what-is-this' },
