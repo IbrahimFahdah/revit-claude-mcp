@@ -1,10 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
-using System.Xml.Linq;
 
 namespace BuiltInTools
 {
@@ -195,7 +192,7 @@ namespace BuiltInTools
                 try
                 {
                     var val = prop.GetValue(element);
-                    string strVal = val == null ? "null" : val.ToString();
+                    var strVal = val == null ? "null" : val.ToString();
                     props.Add(new JObject { ["name"] = prop.Name, ["value"] = strVal });
                 }
                 catch
@@ -859,7 +856,7 @@ namespace BuiltInTools
                     {
                         ElementTransformUtils.MoveElement(doc, el.Id, vector);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         // skip if invalid move
                     }
@@ -912,7 +909,7 @@ namespace BuiltInTools
                     continue;
                 }
 
-                string val = param.AsValueString() ?? param.AsString() ?? param.AsDouble().ToString();
+                var val = param.AsValueString() ?? param.AsString() ?? param.AsDouble().ToString();
                 results.Add(new JObject
                 {
                     ["element_id"] = id,
@@ -1136,7 +1133,7 @@ namespace BuiltInTools
                 var el = doc.GetElement(new ElementId(id));
                 if (el == null) continue;
 
-                bool passes = filter.PassesFilter(el);
+                var passes = filter.PassesFilter(el);
                 resultArr.Add(new JObject
                 {
                     ["element_id"] = id,
@@ -1229,7 +1226,7 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            int viewId = args.Value<int>("view_id");
+            var viewId = args.Value<int>("view_id");
             if (viewId == 0)
                 return new JObject { ["error"] = "Missing view_id." }.ToString();
 
@@ -1363,7 +1360,7 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            int elementId = args.Value<int>("element_id");
+            var elementId = args.Value<int>("element_id");
             if (elementId == 0)
                 return new JObject { ["error"] = "Missing element_id." }.ToString();
 
@@ -1377,8 +1374,8 @@ namespace BuiltInTools
             // --- Instance parameters ---
             foreach (Parameter p in el.Parameters)
             {
-                string name = p.Definition?.Name ?? "Unnamed";
-                string val = GetParameterValue(p);
+                var name = p.Definition?.Name ?? "Unnamed";
+                var val = GetParameterValue(p);
 
                 parameters.Add(new JObject
                 {
@@ -1402,11 +1399,11 @@ namespace BuiltInTools
                     {
                         foreach (Parameter p in typeEl.Parameters)
                         {
-                            string name = p.Definition?.Name ?? "Unnamed";
+                            var name = p.Definition?.Name ?? "Unnamed";
                             if (seenParamNames.Contains(name))
                                 continue; // avoid duplicates
 
-                            string val = GetParameterValue(p);
+                            var val = GetParameterValue(p);
 
                             parameters.Add(new JObject
                             {
@@ -1494,14 +1491,14 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            string parameterName = args.Value<string>("parameter_name");
+            var parameterName = args.Value<string>("parameter_name");
             var ids = args["element_ids"]?.ToObject<List<int>>() ?? new List<int>();
             var value = args["value"]?.ToString();
 
             if (string.IsNullOrEmpty(parameterName) || ids.Count == 0 || value == null)
                 return new JObject { ["error"] = "Missing parameter_name, element_ids, or value." }.ToString();
 
-            int updated = 0;
+            var updated = 0;
 
             using (var tx = new Transaction(doc, "Set Parameter Values"))
             {
@@ -1519,11 +1516,11 @@ namespace BuiltInTools
                     {
                         if (p.StorageType == StorageType.String)
                             p.Set(value);
-                        else if (p.StorageType == StorageType.Double && double.TryParse(value, out double d))
+                        else if (p.StorageType == StorageType.Double && double.TryParse(value, out var d))
                             p.Set(d);
-                        else if (p.StorageType == StorageType.Integer && int.TryParse(value, out int i))
+                        else if (p.StorageType == StorageType.Integer && int.TryParse(value, out var i))
                             p.Set(i);
-                        else if (p.StorageType == StorageType.ElementId && int.TryParse(value, out int eid))
+                        else if (p.StorageType == StorageType.ElementId && int.TryParse(value, out var eid))
                             p.Set(new ElementId(eid));
 
                         updated++;
@@ -1555,7 +1552,7 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            int viewId = args.Value<int>("view_id");
+            var viewId = args.Value<int>("view_id");
             var filterIds = args["filter_ids"]?.ToObject<List<int>>() ?? new List<int>();
 
             if (viewId == 0 || filterIds.Count == 0)
@@ -1690,14 +1687,14 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            string propertyName = args.Value<string>("property_name");
+            var propertyName = args.Value<string>("property_name");
             var ids = args["element_ids"]?.ToObject<List<int>>() ?? new List<int>();
-            string newValue = args.Value<string>("value");
+            var newValue = args.Value<string>("value");
 
             if (string.IsNullOrEmpty(propertyName) || ids.Count == 0)
                 return new JObject { ["error"] = "Missing property_name or element_ids." }.ToString();
 
-            int updated = 0;
+            var updated = 0;
 
             using (var tx = new Transaction(doc, "Set Additional Property"))
             {
@@ -1714,8 +1711,8 @@ namespace BuiltInTools
                     try
                     {
                         object converted = newValue;
-                        if (prop.PropertyType == typeof(double) && double.TryParse(newValue, out double d)) converted = d;
-                        else if (prop.PropertyType == typeof(int) && int.TryParse(newValue, out int i)) converted = i;
+                        if (prop.PropertyType == typeof(double) && double.TryParse(newValue, out var d)) converted = d;
+                        else if (prop.PropertyType == typeof(int) && int.TryParse(newValue, out var i)) converted = i;
 
                         prop.SetValue(el, converted);
                         updated++;
@@ -1853,7 +1850,7 @@ namespace BuiltInTools
                 : JObject.Parse(argsJson);
 
             var ids = args["element_ids"]?.ToObject<List<int>>() ?? new List<int>();
-            double radians = args.Value<double?>("radians") ?? 0;
+            var radians = args.Value<double?>("radians") ?? 0;
 
             if (ids.Count == 0)
                 return new JObject { ["error"] = "No element_ids provided." }.ToString();
@@ -1933,9 +1930,9 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            int viewId = args.Value<int>("view_id");
+            var viewId = args.Value<int>("view_id");
             var categoryIds = args["category_ids"]?.ToObject<List<int>>() ?? new List<int>();
-            bool visible = args.Value<bool?>("visible") ?? true;
+            var visible = args.Value<bool?>("visible") ?? true;
 
             var view = doc.GetElement(new ElementId(viewId)) as View;
             if (view == null)
@@ -2007,7 +2004,7 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            int viewId = args.Value<int>("view_id");
+            var viewId = args.Value<int>("view_id");
             var categoryIds = args["category_ids"]?.ToObject<List<long>>() ?? new List<long>();
 
             var view = doc.GetElement(new ElementId(viewId)) as View;
@@ -2036,7 +2033,7 @@ namespace BuiltInTools
                         if (!view.CanCategoryBeHidden(catId))
                             continue;
 
-                        bool shouldHide = !categoryIds.Contains(catId.Value);
+                        var shouldHide = !categoryIds.Contains(catId.Value);
                         view.SetCategoryHidden(catId, shouldHide);
 
                         if (shouldHide)
@@ -2082,7 +2079,7 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            int viewId = args.Value<int>("view_id");
+            var viewId = args.Value<int>("view_id");
             var view = doc.GetElement(new ElementId(viewId)) as View;
             if (view == null)
                 return new JObject { ["error"] = $"View {viewId} not found." }.ToString();
@@ -2143,9 +2140,9 @@ namespace BuiltInTools
                     ? new JObject()
                     : JObject.Parse(argsJson);
 
-                string apiKey = args.Value<string>("api_key");
-                string prompt = args.Value<string>("prompt");
-                string outputPath = args.Value<string>("output_path");
+                var apiKey = args.Value<string>("api_key");
+                var prompt = args.Value<string>("prompt");
+                var outputPath = args.Value<string>("output_path");
 
                 if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(prompt) ||
                      string.IsNullOrWhiteSpace(outputPath))
@@ -2171,8 +2168,8 @@ namespace BuiltInTools
                     {
                         client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
-                        byte[] imageBytes = File.ReadAllBytes(imagePath);
-                        string base64Image = Convert.ToBase64String(imageBytes);
+                        var imageBytes = File.ReadAllBytes(imagePath);
+                        var base64Image = Convert.ToBase64String(imageBytes);
 
                         // Construct Gemini API request
                         var requestBody = new
@@ -2197,12 +2194,12 @@ namespace BuiltInTools
                         }
                         };
 
-                        string jsonBody = Newtonsoft.Json.JsonConvert.SerializeObject(requestBody);
+                        var jsonBody = Newtonsoft.Json.JsonConvert.SerializeObject(requestBody);
                         var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
                         var apiUrl = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key={apiKey}";
 
                         var response = client.PostAsync(apiUrl, content).Result;
-                        string responseBody = response.Content.ReadAsStringAsync().Result;
+                        var responseBody = response.Content.ReadAsStringAsync().Result;
 
                         if (!response.IsSuccessStatusCode)
                         {
@@ -2224,8 +2221,8 @@ namespace BuiltInTools
                         {
                             if (part["inlineData"]?["data"] != null)
                             {
-                                string base64Result = (string)part["inlineData"]["data"];
-                                byte[] generatedImageBytes = Convert.FromBase64String(base64Result);
+                                var base64Result = (string)part["inlineData"]["data"];
+                                var generatedImageBytes = Convert.FromBase64String(base64Result);
 
                                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
                                 File.WriteAllBytes(outputPath, generatedImageBytes);
@@ -2275,7 +2272,7 @@ namespace BuiltInTools
                 return null;
             }
 
-            string tempImagePath = Path.Combine(Path.GetTempPath(), "RevitViewScreenshot.png");
+            var tempImagePath = Path.Combine(Path.GetTempPath(), "RevitViewScreenshot.png");
 
             ImageExportOptions options = new ImageExportOptions
             {
@@ -2310,9 +2307,9 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            string action = args.Value<string>("action") ?? "list";
-            string name = args.Value<string>("group_name");
-            bool fromSelection = args.Value<bool?>("from_selection") ?? false;
+            var action = args.Value<string>("action") ?? "list";
+            var name = args.Value<string>("group_name");
+            var fromSelection = args.Value<bool?>("from_selection") ?? false;
 
             switch (action.ToLower())
             {
@@ -2456,12 +2453,12 @@ namespace BuiltInTools
                     ? new JObject()
                     : JObject.Parse(argsJson);
 
-                string exportPath = args.Value<string>("export_path");
-                string ifcVersion = args.Value<string>("ifc_version") ?? "IFC4";
+                var exportPath = args.Value<string>("export_path");
+                var ifcVersion = args.Value<string>("ifc_version") ?? "IFC4";
 
                 if (string.IsNullOrWhiteSpace(exportPath))
                 {
-                    string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    var desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                     exportPath = Path.Combine(desktop, "SelectedElements.ifc");
                 }
 
@@ -2476,14 +2473,14 @@ namespace BuiltInTools
                 }
 
                 // Prepare export directory
-                string exportDir = Path.GetDirectoryName(exportPath);
-                string exportName = Path.GetFileNameWithoutExtension(exportPath);
+                var exportDir = Path.GetDirectoryName(exportPath);
+                var exportName = Path.GetFileNameWithoutExtension(exportPath);
                 if (!Directory.Exists(exportDir))
                     Directory.CreateDirectory(exportDir);
 
                 // Create a temporary 3D view
                 View3D tempView = null;
-                bool result = false;
+                var result = false;
 
                 using (Transaction tx = new Transaction(doc, "Prepare Temporary 3D View for IFC Export"))
                 {
@@ -2581,9 +2578,9 @@ namespace BuiltInTools
                     ? new JObject()
                     : JObject.Parse(argsJson);
 
-                string exportPath = args.Value<string>("export_path");
-                string scope = args.Value<string>("scope") ?? "selected";
-                bool includeTypeParams = args.Value<bool?>("include_type_parameters") ?? false;
+                var exportPath = args.Value<string>("export_path");
+                var scope = args.Value<string>("scope") ?? "selected";
+                var includeTypeParams = args.Value<bool?>("include_type_parameters") ?? false;
 
                 var paramArray = args["parameters"]?.ToObject<List<string>>();
                 if (paramArray == null || paramArray.Count == 0)
@@ -2607,7 +2604,7 @@ namespace BuiltInTools
 
                 if (string.IsNullOrWhiteSpace(exportPath))
                 {
-                    string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    var desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                     exportPath = Path.Combine(desktop, "Elements.csv");
                 }
 
@@ -2650,9 +2647,9 @@ namespace BuiltInTools
 
                 foreach (var e in elements)
                 {
-                    string cat = e.Category?.Name ?? "";
-                    string fam = (e is FamilyInstance fi) ? fi.Symbol?.Family?.Name ?? "" : "";
-                    string typeName = (e is FamilyInstance fi2) ? fi2.Symbol?.Name ?? "" : e.Name ?? "";
+                    var cat = e.Category?.Name ?? "";
+                    var fam = (e is FamilyInstance fi) ? fi.Symbol?.Family?.Name ?? "" : "";
+                    var typeName = (e is FamilyInstance fi2) ? fi2.Symbol?.Name ?? "" : e.Name ?? "";
 
                     var row = new List<string>
                     {
@@ -2662,7 +2659,7 @@ namespace BuiltInTools
 
                     foreach (var paramName in paramNames)
                     {
-                        string val = GetParameterValueByName(e, paramName);
+                        var val = GetParameterValueByName(e, paramName);
                         if (includeTypeParams && string.IsNullOrEmpty(val))
                         {
                             var typeElem = doc.GetElement(e.GetTypeId());
@@ -2734,8 +2731,8 @@ namespace BuiltInTools
                 ? new JObject()
                 : JObject.Parse(argsJson);
 
-            string levelName = args.Value<string>("level_name")?.Trim();
-            string exportPath = args.Value<string>("export_path");
+            var levelName = args.Value<string>("level_name")?.Trim();
+            var exportPath = args.Value<string>("export_path");
             var categories = args["categories"]?.ToObject<List<string>>() ?? new List<string>();
 
             if (string.IsNullOrEmpty(levelName))
@@ -2773,7 +2770,7 @@ namespace BuiltInTools
                 normalizedCats.AddRange(matches);
             }
 
-            bool useCategoryFilter = normalizedCats.Count > 0;
+            var useCategoryFilter = normalizedCats.Count > 0;
 
             ElementId levelId = level.Id;
 

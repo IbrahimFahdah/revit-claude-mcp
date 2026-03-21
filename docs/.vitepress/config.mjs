@@ -22,6 +22,12 @@ export default defineConfig({
           { text: 'Testing with MCP Inspector', link: '/guide/mcp-inspector' },
           { text: 'Building the .mcpb Extension', link: '/guide/building-mcpb' }
         ]
+      },
+      {
+        text: 'The Tool System',
+        items: [
+          { text: 'The Tool Registry', link: '/guide/tool-registry' }
+        ]
       }
     ],
     socialLinks: [

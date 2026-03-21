@@ -5,23 +5,9 @@ This folder contains the Claude files to create the **mcpb extension**.
 -- install mcpb packager: npm install -g @anthropic-ai/mcpb
 -- CD the folder and call: mcpb pack
 
-## Revit.Claude.Bridge
-- RoslynWorker: Is simple C# script compiler. This was separated from RevitClaudeBridge to avoid exception when other Microsoft.CodeAnalysis version is already loaded.
-- RevitClaudeBridge: this is the plugin and the tool provider
-
 ## RevitClaudeConnection
 This folder contains the code to connect to Claude API where tools can be downloaded.
 
-## LicenceFileGenerator
-- Generates a licence file based on the machine and user.
-- The file should reside in the same folder as the RevitClaudeConnector.dll
-- The licence should include a url to allow the connector to download tools from a private repository. e.g. "https://drive.google.com/uc?export=download&id=1AdiTkJLMHJlVLodT5AHou9ATYK8cF1ed"
-- The url should point to a file (latest version) with the following info:
-{
-  "version": "1.4.0", // Package version to check for updates
-  "zip_url": "https://drive.google.com/uc?export=download&id=1AdiTkJLMHJlVLodT5AHou9ATYK8cF1ed", // Package zip file
-  "sha256": "9d9b2c1f... (hex)" // SHA256 hash of the zip file
-}
 
 ## User Installation Manual to Install Revit Claude Connector
 - Install Claude Client Desktop
@@ -59,10 +45,7 @@ revit-2025/
             
 revit-2026/
 
-- Check BundleSample.zip for a sample package
 
-## Protection
-obfuscar.console obfuscar.xml
 
 ## Plugin Deployment Steps
 - Building the connector and run obfuscar.console obfuscar.xml
