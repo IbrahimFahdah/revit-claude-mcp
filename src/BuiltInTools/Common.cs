@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
-namespace Tools
+namespace BuiltInTools
 {
     // =====================================================
     // 1. GetCategoryByKeyword
@@ -283,7 +283,7 @@ namespace Tools
     }
 }
 
-namespace Tools
+namespace BuiltInTools
 {
     // =====================================================
     // 1. GetAllElementsOfSpecificFamilies
@@ -532,7 +532,7 @@ namespace Tools
     }
 }
 
-namespace Tools
+namespace BuiltInTools
 {
     // =====================================================
     // 1. GetAdditionalPropertyForAllElementIds
@@ -731,7 +731,7 @@ namespace Tools
     }
 }
 
-namespace Tools
+namespace BuiltInTools
 {
     // =====================================================
     // 1. GetAllUsedFamiliesInModel
@@ -977,7 +977,7 @@ namespace Tools
     }
 }
 
-namespace Tools
+namespace BuiltInTools
 {
     // =====================================================
     // 1. SetDeleteElements
@@ -1215,7 +1215,7 @@ namespace Tools
     }
 }
 
-namespace Tools
+namespace BuiltInTools
 {
     // =====================================================
     // 1. GetAllElementsShownInView
@@ -1480,7 +1480,7 @@ namespace Tools
     }
 }
 
-namespace Tools
+namespace BuiltInTools
 {
     // =====================================================
     // 1. SetParameterValueForElements
@@ -1736,7 +1736,7 @@ namespace Tools
     }
 }
 
-namespace Tools
+namespace BuiltInTools
 {
     // =====================================================
     // 1. GetActiveViewInRevit

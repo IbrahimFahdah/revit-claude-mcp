@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using static RevitClaudeConnector.ToolHandler.ToolRegistry;
+using static RevitClaudePlugIn.ToolHandler.ToolRegistry;
 
-namespace RevitClaudeConnector.Commands
+namespace RevitClaudePlugIn.Commands
 {
     public partial class ToolList : Window
     {

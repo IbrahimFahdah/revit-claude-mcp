@@ -3,7 +3,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System;
 
-namespace RevitClaudeConnector.Commands
+namespace RevitClaudePlugIn.Commands
 {
     [Transaction(TransactionMode.Manual)]
     public class ClaudeCommand : IExternalCommand

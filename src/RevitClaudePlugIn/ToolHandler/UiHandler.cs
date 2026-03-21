@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
-namespace RevitClaudeConnector.ToolHandler
+namespace RevitClaudePlugIn.ToolHandler
 {
     public class UiHandler : IExternalEventHandler
     {

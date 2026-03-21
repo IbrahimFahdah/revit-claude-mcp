@@ -1,13 +1,13 @@
 using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
-using RevitClaudeConnector.Common;
+using RevitClaudePlugIn.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-namespace RevitClaudeConnector.ToolHandler
+namespace RevitClaudePlugIn.ToolHandler
 {
     /// <summary>
     /// Discovers and invokes tools from two roots:

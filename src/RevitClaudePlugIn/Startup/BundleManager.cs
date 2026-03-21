@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RevitClaudeConnector.Common;
+using RevitClaudePlugIn.Common;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
 
-namespace RevitClaudeConnector.Startup
+namespace RevitClaudePlugIn.Startup
 {
     /// <summary>
     /// Global bundle manager for a single ZIP + single latest.json.

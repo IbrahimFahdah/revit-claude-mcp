@@ -1,9 +1,9 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using RevitClaudeConnector.ToolHandler;
+using RevitClaudePlugIn.ToolHandler;
 
-namespace RevitClaudeConnector.Commands
+namespace RevitClaudePlugIn.Commands
 {
     [Transaction(TransactionMode.Manual)]
     public class TooListCommand : IExternalCommand

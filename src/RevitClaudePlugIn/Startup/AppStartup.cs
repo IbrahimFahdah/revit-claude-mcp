@@ -1,7 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
-using RevitClaudeConnector.ToolHandler;
+using RevitClaudePlugIn.ToolHandler;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RevitClaudeConnector.Startup
+namespace RevitClaudePlugIn.Startup
 {
     public class AppStartup
     {

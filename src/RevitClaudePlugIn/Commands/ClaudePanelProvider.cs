@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.UI;
 
-namespace RevitClaudeConnector.Commands
+namespace RevitClaudePlugIn.Commands
 {
     public class ClaudePanelProvider : IDockablePaneProvider
     {

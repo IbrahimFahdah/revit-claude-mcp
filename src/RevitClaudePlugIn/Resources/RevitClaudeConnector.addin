@@ -1,9 +1,9 @@
 <RevitAddIns>
   <AddIn Type="Application">
     <Name>RevitClaudeConnector</Name>
-    <Assembly>RevitClaudeConnector\RevitClaudeConnector.dll</Assembly>
+    <Assembly>RevitClaudeConnector\RevitClaudePlugIn.dll</Assembly>
     <AddInId>8D83F3CF-251D-4373-B0F4-D3C2AE5A1D8A</AddInId>
-    <FullClassName>RevitClaudeConnector.Startup.App</FullClassName>
+    <FullClassName>RevitClaudePlugIn.Startup.App</FullClassName>
     <VendorId>IFAHDAH</VendorId>
     <VendorDescription>Revit ↔ Claude Connector</VendorDescription>
   </AddIn>

@@ -1,12 +1,12 @@
 ﻿using Autodesk.Revit.UI;
-using RevitClaudeConnector.Commands;
-using RevitClaudeConnector.ToolHandler;
+using RevitClaudePlugIn.Commands;
+using RevitClaudePlugIn.ToolHandler;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 
-namespace RevitClaudeConnector.Startup
+namespace RevitClaudePlugIn.Startup
 {
     public class App : IExternalApplication
     {
@@ -25,7 +25,7 @@ namespace RevitClaudeConnector.Startup
             var ribbon = app.CreateRibbonPanel("Revit Claude Connector");
             var asmPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-            var btn = new PushButtonData("ClaudeBtn", "Claude", asmPath, "RevitClaudeConnector.Commands.ClaudeCommand");
+            var btn = new PushButtonData("ClaudeBtn", "Claude", asmPath, "RevitClaudePlugIn.Commands.ClaudeCommand");
             btn.ToolTip = "Revit Claude Connector from IFADAH";
             btn.LongDescription = "This tool allows you to call many Revit functionalities from Claude.";
             var iconsFolder = Path.GetDirectoryName(assemblyPath);
@@ -33,7 +33,7 @@ namespace RevitClaudeConnector.Startup
             btn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn16.png")));
             ribbon.AddItem(btn);
 
-            var toolListbtn = new PushButtonData("toolListbtn", "Tools", asmPath, "RevitClaudeConnector.Commands.TooListCommand");
+            var toolListbtn = new PushButtonData("toolListbtn", "Tools", asmPath, "RevitClaudePlugIn.Commands.TooListCommand");
             toolListbtn.ToolTip = "Revit Claude Connector Tool List";
             toolListbtn.LongDescription = "Show all tools that are currently available with the connector.";
             toolListbtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ToolsBtn32.png")));

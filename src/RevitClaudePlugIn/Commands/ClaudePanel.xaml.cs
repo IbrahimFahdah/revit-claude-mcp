@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 
-namespace RevitClaudeConnector.Commands
+namespace RevitClaudePlugIn.Commands
 {
     public partial class ClaudePanel : UserControl
     {

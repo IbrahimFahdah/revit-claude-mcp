@@ -1,0 +1,11 @@
+find way to deploy release on GitHub
+find way to notify of new update
+standard/custom tool
+maybe support older revit
+doc building tools
+refactor BundleManager
+token usage note
+add ribbon bar
+first webianr on general intro & create a linkedin  post with url but in the meeting questions answered on skool
+update install steps on skool
+deply static website

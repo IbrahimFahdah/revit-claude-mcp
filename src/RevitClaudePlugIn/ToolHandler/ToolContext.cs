@@ -1,6 +1,6 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-namespace RevitClaudeConnector.ToolHandler
+namespace RevitClaudePlugIn.ToolHandler
 {
     public sealed class ToolContext
     {

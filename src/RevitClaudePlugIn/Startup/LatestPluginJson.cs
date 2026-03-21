@@ -1,4 +1,4 @@
-﻿namespace RevitClaudeConnector.Startup
+﻿namespace RevitClaudePlugIn.Startup
 {
     public sealed class LatestPluginJson
     {
