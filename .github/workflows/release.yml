@@ -32,6 +32,9 @@ jobs:
           Copy-Item src/BuiltInTools/bin/Release/net8.0-windows/BuiltInTools.dll dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners/ -Force
           Copy-Item src/BuiltInTools/Schemas dist/RevitClaudeConnector/Tools/Packages/BuiltIn/Schemas -Recurse -Force
           Copy-Item src/BuiltInTools/manifest.json dist/RevitClaudeConnector/Tools/Packages/BuiltIn/
+          Get-ChildItem dist/RevitClaudeConnector/Resources -File | Move-Item -Destination dist/RevitClaudeConnector/ -Force
+          Remove-Item dist/RevitClaudeConnector/Resources -Recurse -Force
+          Copy-Item src/RevitClaudePlugIn/Resources/plugin_settings.json dist/RevitClaudeConnector/
           Copy-Item src/RevitClaudePlugIn/Resources/RevitClaudeConnector.addin dist/
           New-Item -ItemType Directory -Path dist/server -Force | Out-Null
           Copy-Item src/Connector.Mcp.Server/Revit.Claude.Connector.Mcp.Server.mcpb dist/server/
