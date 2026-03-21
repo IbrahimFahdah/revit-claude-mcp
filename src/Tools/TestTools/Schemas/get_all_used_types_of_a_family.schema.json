@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_all_used_types_of_a_family.schema.json",
+  "title": "Get All Used Types Of A Family",
+  "description": "Get all the type ids and names (and count) of a specific family. Takes a family name (not an id, not a type) and returns all types ids and names. It works also with system families (like wall or floor families).",
+  "type": "object",
+  "properties": {
+    "family_name": {
+      "type": "string",
+      "description": "Family name."
+    }
+  },
+  "required": [ "family_name" ],
+  "additionalProperties": false
+}

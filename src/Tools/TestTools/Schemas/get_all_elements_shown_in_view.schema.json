@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_all_elements_shown_in_view.schema.json",
+  "title": "Get All Elements Shown In View",
+  "description": "Get all the element ids shown in a view (e.g. walls or rooms), schedule (listed elements) or sheet (e.g. titleblocks or viewports). It doesn’t work with View Templates.",
+  "type": "object",
+  "properties": {
+    "view_id": {
+      "type": "integer",
+      "description": "ElementId of the view or schedule or sheet."
+    }
+  },
+  "required": [ "view_id" ],
+  "additionalProperties": false
+}

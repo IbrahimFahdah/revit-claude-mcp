@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/export_elements_to_csv.schema.json",
+  "title": "Export specified parameters to a CSV file",
+  "description": "Export selected or visible elements with specified parameters to a CSV file.",
+  "type": "object",
+  "properties": {
+    "export_path": {
+      "type": "string",
+      "description": "Full path for the CSV export file (default: Desktop/Elements.csv)."
+    },
+    "scope": {
+      "type": "string",
+      "enum": [ "selected", "visible" ],
+      "description": "Whether to export selected or visible elements (default: selected)."
+    },
+    "parameters": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of parameter names to include (case-insensitive)."
+    },
+    "include_type_parameters": {
+      "type": "boolean",
+      "description": "If true, includes type parameters as well."
+    }
+  },
+  "required": [ "parameters" ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_movement_for_elements.schema.json",
+  "title": "Set Movement For Elements",
+  "description": "Move element ids using translation vectors in feet coords. Hosted elements are projected/corrected onto host LocationLine. Ids must represent elements (not types, not families, not categories, ...). For arrangements, consider sizes using get_boundingboxes.",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to move."
+    },
+    "translation": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": [ "x", "y", "z" ],
+      "description": "Translation vector in feet."
+    }
+  },
+  "required": [ "element_ids", "translation" ],
+  "additionalProperties": false
+}

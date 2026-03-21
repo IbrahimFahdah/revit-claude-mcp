@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_all_workset_information.schema.json",
+  "title": "Get All Workset Information",
+  "description": "Get a complete inventory of all worksets that exist in the document (id, name, owner, creator, etc.). Returns project-wide workset information regardless of which elements are assigned to them. A workset can be the MEP discipline (grouping all Mechanical, Electrical, Plumbing elements, and who can edit them in the model).",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_model_categories.schema.json",
+  "title": "Get Model Categories",
+  "description": "Get all the categories (names and ids) in the Revit model. Preferably use get_category_by_keyword, but use this method if not found with get_category_by_keyword.",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

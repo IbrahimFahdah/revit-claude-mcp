@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/helloworld.schema.json",
+  "title": "Hello World",
+  "description": "Say Hello World.",
+  "type": "object",
+  "properties": {}
+}

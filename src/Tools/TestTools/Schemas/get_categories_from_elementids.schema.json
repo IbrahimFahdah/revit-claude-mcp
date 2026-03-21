@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_categories_from_elementids.schema.json",
+  "title": "Get Categories From ElementIds",
+  "description": "Get the categories for a list of element ids (category id and name).",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false
+}

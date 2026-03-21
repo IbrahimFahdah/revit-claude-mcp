@@ -1,0 +1,83 @@
+# Claude Code files - never commit to git
+.claude/
+
+# ========================
+# Visual Studio / MSBuild
+# ========================
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# Build outputs
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Publish
+**/publish/
+**/PublishProfiles/
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# ========================
+# Node.js / npm
+# ========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+dist/
+
+# ========================
+# Docs site (VitePress)
+# ========================
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# ========================
+# OS files
+# ========================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.lnk
+
+# ========================
+# Compiled binaries / packages
+# ========================
+*.dll
+*.exe
+*.pdb
+*.mcpb
+*.zip

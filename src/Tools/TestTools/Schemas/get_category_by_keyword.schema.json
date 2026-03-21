@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_category_by_keyword.schema.json",
+  "title": "Get Category by Keyword",
+  "description": "Get category ids and names matching a guessed keyword (like Door, Wall or View). Keyword must be in the language_of_model (returned with any Revit mcp tool), use chat language for the first call. This is more efficient than retrieving all categories via get_model_categories.",
+  "type": "object",
+  "properties": {
+    "keyword": {
+      "type": "string",
+      "description": "Partial keyword to search in category names (case-insensitive).",
+      "examples": [ "door", "wall", "view" ]
+    }
+  },
+  "required": [ "keyword" ],
+  "additionalProperties": false
+}

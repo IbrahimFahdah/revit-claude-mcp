@@ -1,0 +1,31 @@
+{
+  "$id": "schemas/set_isolate_categories_in_view.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Isolate Categories In View",
+  "description": "Show only specified categories by hiding all other categories in the view. More efficient than isolating individual elements.",
+  "type": "object",
+  "properties": {
+    "view_id": {
+      "type": "integer",
+      "description": "View ElementId where categories will be isolated."
+    },
+    "category_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "description": "List of category ElementIds to keep visible (all others will be hidden)."
+    }
+  },
+  "required": [ "view_id", "category_ids" ],
+  "examples": [
+    {
+      "view_id": 12345,
+      "category_ids": [ -2000023 ]
+    },
+    {
+      "view_id": 12345,
+      "category_ids": [ -2000011, -2000023, -2000014 ]
+    }
+  ]
+}

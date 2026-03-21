@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_active_view_in_revit.schema.json",
+  "title": "Get Active View In Revit",
+  "description": "Get the title/fullname, id and screen directions of the current active view (shown to the user) in Revit. Returns one view id and view name.",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

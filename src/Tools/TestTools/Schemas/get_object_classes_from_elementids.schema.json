@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_object_classes_from_elementids.schema.json",
+  "title": "Get Object Classes From ElementIds",
+  "description": "Get the classes of objects from a list of ids. Returns full class names like Autodesk.Revit.DB.Wall or Autodesk.Revit.DB.FamilyInstance).",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to inspect."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false
+}

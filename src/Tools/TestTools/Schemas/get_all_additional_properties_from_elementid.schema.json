@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_all_additional_properties_from_elementid.schema.json",
+  "title": "Get All Additional Properties From ElementId",
+  "description": "Get all additional properties (name and value) from one element id, based on its object class. No parameter/property id is returned, but the name and values of the properties. Use only if get_parameters_from_elementid does not return the desired values. Returns properties exposed by the underlying Revit API classes.",
+  "type": "object",
+  "properties": {
+    "element_id": {
+      "type": "integer",
+      "description": "ElementId integer value."
+    }
+  },
+  "required": [ "element_id" ],
+  "additionalProperties": false
+}

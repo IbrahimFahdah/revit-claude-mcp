@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/generate_image_with_gemini_flash.schema.json",
+  "title": "Generate Image with Gemini Flash",
+  "description": "Send an image and text prompt to Gemini Flash (aka nano banana) API and save the generated image result to a specified file path.",
+  "type": "object",
+  "properties": {
+    "api_key": {
+      "type": "string",
+      "description": "Google Gemini API key."
+    },
+    "prompt": {
+      "type": "string",
+      "description": "Text description or instruction for the AI to generate content."
+    },
+    "output_path": {
+      "type": "string",
+      "description": "File path to save the generated output image."
+    }
+  },
+  "required": [ "api_key", "prompt", "output_path" ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "api_key": "YOUR_API_KEY_HERE",
+      "prompt": "Enhance brightness and clarity of this facade render.",
+      "output_path": "C:/Temp/output.jpg"
+    }
+  ]
+}

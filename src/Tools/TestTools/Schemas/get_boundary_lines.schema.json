@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_boundary_lines.schema.json",
+  "title": "Get Boundary Lines",
+  "description": "Get the boundary lines (of the geometry) of a list of elements. The element ids must represent Walls, Floors or Rooms. This returns more precise geometry than get_boundingboxes methods, as it gets the actual lines/edges of the geometry (and not the external/bounding box). Returns points XYZ coordinates for each line.",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false
+}

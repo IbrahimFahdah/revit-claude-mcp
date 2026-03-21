@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/export_elements_to_csv.schema.json",
+  "title": "Export selected to IFC file",
+  "description": "Export selected Revit elements to an IFC file.",
+  "type": "object",
+  "properties": {
+    "export_path": {
+      "type": "string",
+      "description": "Full path for the exported IFC file."
+    },
+    "ifc_version": {
+      "type": "string",
+      "enum": [ "IFC2x3", "IFC4" ],
+      "description": "Optional IFC version (default is IFC4)."
+    }
+  },
+  "required": []
+}

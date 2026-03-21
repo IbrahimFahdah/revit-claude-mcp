@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_copy_view_filters.schema.json",
+  "title": "Set Copy View Filters",
+  "description": "Copy view filters and graphic overrides from one view to a list of target views.",
+  "type": "object",
+  "properties": {
+    "source_view_id": {
+      "type": "integer",
+      "description": "ElementId (integer) of the source view to copy filters from."
+    },
+    "target_view_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of ElementIds (integers) of target views to apply filters to."
+    }
+  },
+  "required": [ "source_view_id", "target_view_ids" ],
+  "additionalProperties": false
+}

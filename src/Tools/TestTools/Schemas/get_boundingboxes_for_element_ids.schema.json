@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_boundingboxes_for_element_ids.schema.json",
+  "title": "Get BoundingBoxes For ElementIds",
+  "description": "Get the size and position (min/max XYZ coordinates) of the orthogonal rectangular bounding box enclosing each element in the list of ids.",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false
+}

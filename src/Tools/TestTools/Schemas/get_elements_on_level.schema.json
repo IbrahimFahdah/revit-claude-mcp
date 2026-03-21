@@ -1,0 +1,56 @@
+{
+  "name": "get_elements_on_level",
+  "description": "Get all elements placed on a specified Revit level.",
+  "type": "object",
+  "properties": {
+    "level_name": {
+      "type": "string",
+      "description": "The name of the level to search for (case-insensitive)."
+    },
+    "categories": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional list of category names to include (case-insensitive). Example: ['Walls', 'Floors', 'Doors']"
+    }
+  },
+  "required": [ "level_name" ],
+  "returns": {
+    "type": "object",
+    "properties": {
+      "success": {
+        "type": "boolean",
+        "description": "Indicates whether the operation succeeded."
+      },
+      "message": {
+        "type": "string",
+        "description": "Contains error message or status text if success is false."
+      },
+      "element_count": {
+        "type": "integer",
+        "description": "Number of elements found on the specified level."
+      },
+      "elements": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "description": "Element ID."
+            },
+            "name": {
+              "type": "string",
+              "description": "Element name."
+            },
+            "category": {
+              "type": "string",
+              "description": "Category of the element."
+            }
+          }
+        },
+        "description": "List of element data objects found on the level."
+      }
+    },
+    "required": [ "success" ]
+  }
+}

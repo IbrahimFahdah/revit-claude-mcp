@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_isolated_elements_in_view.schema.json",
+  "title": "Set Isolated Elements In View",
+  "description": "Set the element ids as isolated in the view in Revit. Ids must represent elements (not types, not families, not categories, ...). This overrides the current user isolation in the view.",
+  "type": "object",
+  "properties": {
+    "view_id": {
+      "type": "integer",
+      "description": "View ElementId integer."
+    },
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to isolate."
+    }
+  },
+  "required": [ "view_id", "element_ids" ],
+  "additionalProperties": false
+}

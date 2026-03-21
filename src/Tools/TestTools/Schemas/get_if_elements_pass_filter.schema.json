@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_if_elements_pass_filter.schema.json",
+  "title": "Get If Elements Pass Filter",
+  "description": "Check whether a list of element ids passes a given filter. Returns the list of element ids indicating if each element passes or not.",
+  "type": "object",
+  "properties": {
+    "filter_id": {
+      "type": "integer",
+      "description": "Filter ElementId to test."
+    },
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to evaluate."
+    }
+  },
+  "required": [ "filter_id", "element_ids" ],
+  "additionalProperties": false
+}

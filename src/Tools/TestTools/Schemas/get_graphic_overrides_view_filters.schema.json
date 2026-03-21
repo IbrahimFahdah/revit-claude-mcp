@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_graphic_overrides_view_filters.schema.json",
+  "title": "Get Graphic Overrides View Filters",
+  "description": "Get the graphics/appearance/painted (colors and pattern ids) for a list of view filter ids in a view. Medium priority layer for graphics in the view. They can be overridden by element-specific graphics. Do not use with elements in linked documents.",
+  "type": "object",
+  "properties": {
+    "view_id": {
+      "type": "integer",
+      "description": "View ElementId integer."
+    },
+    "filter_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of view filter ElementIds."
+    }
+  },
+  "required": [ "view_id", "filter_ids" ],
+  "additionalProperties": false
+}

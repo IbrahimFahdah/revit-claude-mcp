@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_material_layers_from_types.schema.json",
+  "title": "Get Material Layers From Types",
+  "description": "Get the material layers or composition (materials, names and widths) for a list of element ids. The ids must represent system types like WallType, FloorType, RoofType or CeilingType (HostObjAttributes inherited class).",
+  "type": "object",
+  "properties": {
+    "type_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of system type ElementIds."
+    }
+  },
+  "required": [ "type_ids" ],
+  "additionalProperties": false
+}

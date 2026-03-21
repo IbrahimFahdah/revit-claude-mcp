@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": "helloworld",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.HelloWorld"
+      },
+      "schema": "schemas/helloworld.schema.json"
+    },
+    {
+      "name": "get_project_info",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetProjectInfo"
+      },
+      "schema": "schemas/get_project_info.schema.json"
+    }
+  ]
+}

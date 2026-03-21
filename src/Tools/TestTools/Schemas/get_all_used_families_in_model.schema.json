@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_all_used_families_in_model.schema.json",
+  "title": "Get All Used Families In Model",
+  "description": "Get all the loadable family ids and names in the model (and count). It doesn’t include system families (like wall or floor families). Preferably use get_all_families_of_a_category.",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

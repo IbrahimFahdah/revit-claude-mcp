@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_graphic_overrides_for_elements_in_view.schema.json",
+  "title": "Set Graphic Overrides For Elements In View",
+  "description": "Set the graphics/colors for the element ids in the view in Revit. Ids must represent elements (not types, not families, not categories, ...).",
+  "type": "object",
+  "properties": {
+    "view_id": {
+      "type": "integer",
+      "description": "View ElementId integer."
+    },
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs."
+    },
+    "color_rgb": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "minItems": 3,
+      "maxItems": 3,
+      "description": "Optional RGB color [R,G,B]."
+    }
+  },
+  "required": [ "view_id", "element_ids" ],
+  "additionalProperties": false
+}

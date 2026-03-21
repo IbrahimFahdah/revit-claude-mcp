@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_size_in_mb_of_families.schema.json",
+  "title": "Get Size In MB Of Families",
+  "description": "Get the file size in MB of loadable Revit families from a list of element ids and returns an ordered list of families by file size. It can take long to process. It includes the file size in MB of the model file. Do not use with elements in linked documents.",
+  "type": "object",
+  "properties": {
+    "family_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of family ElementIds to measure."
+    }
+  },
+  "required": [ "family_ids" ],
+  "additionalProperties": false
+}

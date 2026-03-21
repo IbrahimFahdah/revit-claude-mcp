@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_all_elements_of_specific_families.schema.json",
+  "title": "Get All Elements Of Specific Families",
+  "description": "Get all element ids of specific families given their names.",
+  "type": "object",
+  "properties": {
+    "family_names": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of family names."
+    }
+  },
+  "required": [ "family_names" ],
+  "additionalProperties": false
+}

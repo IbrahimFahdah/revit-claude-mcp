@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/manage_element_visibility_cache.schema.json",
+  "title": "Manage Element Visibility Cache",
+  "description": "Create, show, hide, select, list, or clear named element visibility groups in memory during the Revit session.",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [ "create", "show", "hide", "select", "list", "clear" ],
+      "description": "Action to perform on cached visibility groups."
+    },
+    "group_name": {
+      "type": "string",
+      "description": "Name of the group for create, show, hide, or select actions."
+    },
+    "from_selection": {
+      "type": "boolean",
+      "description": "If true, cache currently selected elements; otherwise, use all visible elements in view."
+    }
+  },
+  "required": [ "action" ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "action": "create",
+      "group_name": "Beams",
+      "from_selection": true
+    },
+    {
+      "action": "select",
+      "group_name": "Beams"
+    },
+    {
+      "action": "hide",
+      "group_name": "Beams"
+    },
+    {
+      "action": "show",
+      "group_name": "Beams"
+    },
+    { "action": "list" },
+    { "action": "clear" }
+  ]
+}

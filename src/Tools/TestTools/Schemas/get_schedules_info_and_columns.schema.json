@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_schedules_info_and_columns.schema.json",
+  "title": "Get Schedules Info And Columns",
+  "description": "Get schedules (tables) information and columns from a list of element ids of the category OST_Schedules or ViewSchedule class. Returns schedule's columns, parameter ids and headers, which can be used with get_all_elements_shown_in_view and get_parameter_value_for_element_ids for specific element ids and data shown in the schedule.",
+  "type": "object",
+  "properties": {
+    "schedule_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of schedule ElementIds."
+    }
+  },
+  "required": [ "schedule_ids" ],
+  "additionalProperties": false
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_elements_by_category.schema.json",
+  "title": "Get Elements By Category",
+  "description": "Get all the element ids for a category id.",
+  "type": "object",
+  "properties": {
+    "category_id": {
+      "type": "integer",
+      "description": "Category ElementId integer."
+    }
+  },
+  "required": [ "category_id" ],
+  "additionalProperties": false
+}

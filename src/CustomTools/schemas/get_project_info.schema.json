@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_project_info.schema.json",
+  "title": "Project Info",
+  "description": "Return project info.",
+  "type": "object",
+  "properties": {}
+}

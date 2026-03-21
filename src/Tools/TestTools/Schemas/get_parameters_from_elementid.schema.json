@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_parameters_from_elementid.schema.json",
+  "title": "Get Parameters From ElementId",
+  "description": "Get all the parameter/property values (almost any attribute) for one element id or type id (almost any object). Use this first and then get_parameter_value_for_element_ids for bulk requests.",
+  "type": "object",
+  "properties": {
+    "element_id": {
+      "type": "integer",
+      "description": "ElementId or TypeId to read parameters from."
+    }
+  },
+  "required": [ "element_id" ],
+  "additionalProperties": false
+}

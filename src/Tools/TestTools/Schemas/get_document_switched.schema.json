@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_document_switched.schema.json",
+  "title": "Get Document Switched",
+  "description": "Switch the current document to a linked document, or back to the current document. After switching, all the following calls will be in the switched document. Repeat this call with switchMainDoc = true to switch back to the main document.",
+  "type": "object",
+  "properties": {
+    "switch_linked": {
+      "type": "boolean",
+      "description": "True to switch to linked document."
+    },
+    "switchMainDoc": {
+      "type": "boolean",
+      "description": "True to switch back to main document."
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

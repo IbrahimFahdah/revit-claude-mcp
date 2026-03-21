@@ -1,0 +1,38 @@
+{
+  "$id": "schemas/set_category_visibility_in_view.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Set Category Visibility In View",
+  "description": "Hide or show categories directly in a view without collecting element IDs. More efficient than isolating elements.",
+  "type": "object",
+  "properties": {
+    "view_id": {
+      "type": "integer",
+      "description": "View ElementId where category visibility will be modified."
+    },
+    "category_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "description": "List of category ElementIds to modify visibility for."
+    },
+    "visible": {
+      "type": "boolean",
+      "description": "True to show the categories, False to hide them.",
+      "default": true
+    }
+  },
+  "required": [ "view_id", "category_ids", "visible" ],
+  "examples": [
+    {
+      "view_id": 12345,
+      "category_ids": [ -2000023 ],
+      "visible": false
+    },
+    {
+      "view_id": 12345,
+      "category_ids": [ -2000011, -2000014 ],
+      "visible": true
+    }
+  ]
+}

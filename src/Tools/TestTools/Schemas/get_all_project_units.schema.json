@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_all_project_units.schema.json",
+  "title": "Get All Project Units",
+  "description": "Get all project units and symbols for parameters/properties/attributes defined by the user/template in the model.",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

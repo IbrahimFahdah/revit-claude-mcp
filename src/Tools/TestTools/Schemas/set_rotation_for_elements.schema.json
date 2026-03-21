@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_rotation_for_elements.schema.json",
+  "title": "Set Rotation For Elements",
+  "description": "Rotate element ids using angles in rad. Positive radians rotates counterclockwise. If not specified, use locationPoint as axis start point and Z axis. Ids must represent elements (not types, not families, not categories, ...).",
+  "type": "object",
+  "properties": {
+    "radians": {
+      "type": "number",
+      "description": "Angle in radians (positive = counterclockwise)."
+    },
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to rotate."
+    }
+  },
+  "required": [ "radians", "element_ids" ],
+  "additionalProperties": false
+}

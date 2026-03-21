@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_viewports_and_schedules_on_sheets.schema.json",
+  "title": "Get Viewports And Schedules On Sheets",
+  "description": "Get all the viewports, schedules, legends, ... with their reference views placed in each sheet of a list (category OST_Sheets or ViewSheet class).",
+  "type": "object",
+  "properties": {
+    "sheet_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of sheet ElementIds."
+    }
+  },
+  "required": [ "sheet_ids" ],
+  "additionalProperties": false
+}

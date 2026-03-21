@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_delete_elements.schema.json",
+  "title": "Set Delete Elements",
+  "description": "Delete element from the document including their hosted elements and annotations. Ids must represent elements (not types, not families, not categories, ...).",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to delete."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false
+}

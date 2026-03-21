@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_worksets_from_elementids.schema.json",
+  "title": "Get Worksets From ElementIds",
+  "description": "Get the workset assignment for a list of element ids (including if editable). For bulk requests. Only if the document is workshared.",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false
+}

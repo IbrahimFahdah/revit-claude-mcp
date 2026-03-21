@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_user_selection_in_revit.schema.json",
+  "title": "Get User Selection In Revit",
+  "description": "Get the selected element ids by the user in Revit.",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

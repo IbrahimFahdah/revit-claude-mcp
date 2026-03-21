@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_parameter_value_for_element_ids.schema.json",
+  "title": "Get Parameter Value For ElementIds",
+  "description": "Get one parameter/property value (almost any attribute) for each element/type id in a list (almost any object). Use get_parameters_from_elementid to get idParameter first.",
+  "type": "object",
+  "properties": {
+    "parameter_name": {
+      "type": "string",
+      "description": "Parameter name obtained from get_parameters_from_elementid."
+    },
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element or type IDs."
+    }
+  },
+  "required": [ "parameter_name", "element_ids" ],
+  "additionalProperties": false
+}

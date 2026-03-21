@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_element_types_for_element_ids.schema.json",
+  "title": "Get Element Types for Element IDs",
+  "description": "Get the type ids and type names for a list of elements ids (and count).",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to retrieve their associated type IDs and names."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "element_ids": [ 1001, 1002, 1003 ]
+    }
+  ]
+}

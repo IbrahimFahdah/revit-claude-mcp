@@ -1,0 +1,10 @@
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>RevitClaudeConnector</Name>
+    <Assembly>C:\Users\ibrah\Desktop\OneDrive\JobSearch\Workshops\RevitMCP\RevitClaudeConnection\bin\Debug\net8.0-windows\RevitClaudeConnector.dll</Assembly>
+    <AddInId>8D83F3CF-251D-4373-B0F4-D3C2AE5A1D8A</AddInId>
+    <FullClassName>RevitClaudeConnector.App</FullClassName>
+    <VendorId>CLBR</VendorId>
+    <VendorDescription>Claude ↔ Revit Connector</VendorDescription>
+  </AddIn>
+</RevitAddIns>

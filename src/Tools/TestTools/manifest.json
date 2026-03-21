@@ -1,0 +1,389 @@
+{
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": "get_category_by_keyword",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetCategoryByKeyword"
+      },
+      "schema": "schemas/get_category_by_keyword.schema.json"
+    },
+    {
+      "name": "set_copy_view_filters",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetCopyViewFilters"
+      },
+      "schema": "schemas/set_copy_view_filters.schema.json"
+    },
+    {
+      "name": "get_schedules_info_and_columns",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetSchedulesInfoAndColumns"
+      },
+      "schema": "schemas/get_schedules_info_and_columns.schema.json"
+    },
+    {
+      "name": "get_all_additional_properties_from_elementid",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAllAdditionalPropertiesFromElementId"
+      },
+      "schema": "schemas/get_all_additional_properties_from_elementid.schema.json"
+    },
+    {
+      "name": "get_graphic_overrides_for_elementids_in_view",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetGraphicOverridesForElementIdsInView"
+      },
+      "schema": "schemas/get_graphic_overrides_for_elementids_in_view.schema.json"
+    },
+    {
+      "name": "get_all_elements_of_specific_families",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAllElementsOfSpecificFamilies"
+      },
+      "schema": "schemas/get_all_elements_of_specific_families.schema.json"
+    },
+    {
+      "name": "get_material_layers_from_types",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetMaterialLayersFromTypes"
+      },
+      "schema": "schemas/get_material_layers_from_types.schema.json"
+    },
+    {
+      "name": "set_user_selection_in_revit",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetUserSelectionInRevit"
+      },
+      "schema": "schemas/set_user_selection_in_revit.schema.json"
+    },
+    {
+      "name": "set_graphic_overrides_for_elements_in_view",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetGraphicOverridesForElementsInView"
+      },
+      "schema": "schemas/set_graphic_overrides_for_elements_in_view.schema.json"
+    },
+    {
+      "name": "get_viewports_and_schedules_on_sheets",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetViewportsAndSchedulesOnSheets"
+      },
+      "schema": "schemas/get_viewports_and_schedules_on_sheets.schema.json"
+    },
+    {
+      "name": "get_additional_property_for_all_elementids",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAdditionalPropertyForAllElementIds"
+      },
+      "schema": "schemas/get_additional_property_for_all_elementids.schema.json"
+    },
+    {
+      "name": "get_elements_by_category",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetElementsByCategory"
+      },
+      "schema": "schemas/get_elements_by_category.schema.json"
+    },
+    {
+      "name": "get_categories_from_elementids",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetCategoriesFromElementIds"
+      },
+      "schema": "schemas/get_categories_from_elementids.schema.json"
+    },
+    {
+      "name": "set_isolated_elements_in_view",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetIsolatedElementsInView"
+      },
+      "schema": "schemas/set_isolated_elements_in_view.schema.json"
+    },
+    {
+      "name": "get_all_used_types_of_a_family",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAllUsedTypesOfAFamily"
+      },
+      "schema": "schemas/get_all_used_types_of_a_family.schema.json"
+    },
+    {
+      "name": "get_all_used_families_in_model",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAllUsedFamiliesInModel"
+      },
+      "schema": "schemas/get_all_used_families_in_model.schema.json"
+    },
+    {
+      "name": "get_boundary_lines",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetBoundaryLines"
+      },
+      "schema": "schemas/get_boundary_lines.schema.json"
+    },
+    {
+      "name": "set_movement_for_elements",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetMovementForElements"
+      },
+      "schema": "schemas/set_movement_for_elements.schema.json"
+    },
+    {
+      "name": "get_parameter_value_for_element_ids",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetParameterValueForElementIds"
+      },
+      "schema": "schemas/get_parameter_value_for_element_ids.schema.json"
+    },
+    {
+      "name": "get_worksets_from_elementids",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetWorksetsFromElementIds"
+      },
+      "schema": "schemas/get_worksets_from_elementids.schema.json"
+    },
+    {
+      "name": "set_delete_elements",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetDeleteElements"
+      },
+      "schema": "schemas/set_delete_elements.schema.json"
+    },
+    {
+      "name": "get_document_switched",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetDocumentSwitched"
+      },
+      "schema": "schemas/get_document_switched.schema.json"
+    },
+    {
+      "name": "get_all_workset_information",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAllWorksetInformation"
+      },
+      "schema": "schemas/get_all_workset_information.schema.json"
+    },
+    {
+      "name": "get_if_elements_pass_filter",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetIfElementsPassFilter"
+      },
+      "schema": "schemas/get_if_elements_pass_filter.schema.json"
+    },
+    {
+      "name": "get_location_for_element_ids",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetLocationForElementIds"
+      },
+      "schema": "schemas/get_location_for_element_ids.schema.json"
+    },
+    {
+      "name": "get_all_elements_shown_in_view",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAllElementsShownInView"
+      },
+      "schema": "schemas/get_all_elements_shown_in_view.schema.json"
+    },
+    {
+      "name": "get_size_in_mb_of_families",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetSizeInMBOfFamilies"
+      },
+      "schema": "schemas/get_size_in_mb_of_families.schema.json"
+    },
+    {
+      "name": "get_object_classes_from_elementids",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetObjectClassesFromElementIds"
+      },
+      "schema": "schemas/get_object_classes_from_elementids.schema.json"
+    },
+    {
+      "name": "get_parameters_from_elementid",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetParametersFromElementId"
+      },
+      "schema": "schemas/get_parameters_from_elementid.schema.json"
+    },
+    {
+      "name": "get_boundingboxes_for_element_ids",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetBoundingBoxesForElementIds"
+      },
+      "schema": "schemas/get_boundingboxes_for_element_ids.schema.json"
+    },
+    {
+      "name": "set_parameter_value_for_elements",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetParameterValueForElements"
+      },
+      "schema": "schemas/set_parameter_value_for_elements.schema.json"
+    },
+    {
+      "name": "get_graphic_overrides_view_filters",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetGraphicOverridesViewFilters"
+      },
+      "schema": "schemas/get_graphic_overrides_view_filters.schema.json"
+    },
+    {
+      "name": "get_element_types_for_element_ids",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetElementTypesForElementIds"
+      },
+      "schema": "schemas/get_element_types_for_element_ids.schema.json"
+    },
+    {
+      "name": "get_all_warnings_in_model",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAllWarningsInModel"
+      },
+      "schema": "schemas/get_all_warnings_in_model.schema.json"
+    },
+    {
+      "name": "set_additional_property_for_all_elements",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetAdditionalPropertyForAllElements"
+      },
+      "schema": "schemas/set_additional_property_for_all_elements.schema.json"
+    },
+    {
+      "name": "get_active_view_in_revit",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetActiveViewInRevit"
+      },
+      "schema": "schemas/get_active_view_in_revit.schema.json"
+    },
+    {
+      "name": "get_all_project_units",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetAllProjectUnits"
+      },
+      "schema": "schemas/get_all_project_units.schema.json"
+    },
+    {
+      "name": "get_model_categories",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetModelCategories"
+      },
+      "schema": "schemas/get_model_categories.schema.json"
+    },
+    {
+      "name": "set_rotation_for_elements",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetRotationForElements"
+      },
+      "schema": "schemas/set_rotation_for_elements.schema.json"
+    },
+    {
+      "name": "get_user_selection_in_revit",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetUserSelectionInRevit"
+      },
+      "schema": "schemas/get_user_selection_in_revit.schema.json"
+    },
+    {
+      "name": "set_category_visibility_in_view",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetCategoryVisibilityInView"
+      },
+      "schema": "schemas/set_category_visibility_in_view.schema.json"
+    },
+    {
+      "name": "set_isolate_categories_in_view",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetIsolateCategoriesInView"
+      },
+      "schema": "schemas/set_isolate_categories_in_view.schema.json"
+    },
+    {
+      "name": "set_reset_category_visibility_in_view",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.SetResetCategoryVisibilityInView"
+      },
+      "schema": "schemas/set_reset_category_visibility_in_view.schema.json"
+    },
+    {
+      "name": "generate_image_with_gemini_flash",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GenerateImageWithGeminiFlash"
+      },
+      "schema": "schemas/generate_image_with_gemini_flash.schema.json"
+    },
+    {
+      "name": "manage_element_visibility_cache",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.ManageElementVisibilityCache"
+      },
+      "schema": "schemas/manage_element_visibility_cache.schema.json"
+    },
+    {
+      "name": "export_selected_to_ifc",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.ExportSelectedToIFC"
+      },
+      "schema": "schemas/export_selected_to_ifc.schema.json"
+    },
+    {
+      "name": "export_elements_to_csv",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.ExportElementsToCSV"
+      },
+      "schema": "schemas/export_elements_to_csv.schema.json"
+    },
+    {
+      "name": "get_elements_on_level",
+      "runner": {
+        "assembly": "runners/Tools.dll",
+        "type": "Tools.GetElementsOnLevel"
+      },
+      "schema": "schemas/get_elements_on_level.schema.json"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_additional_property_for_all_elements.schema.json",
+  "title": "Set Additional Property For All Elements",
+  "description": "Set the value of one additional property for each element id in a list.",
+  "type": "object",
+  "properties": {
+    "property_name": {
+      "type": "string",
+      "description": "Name of the property to set."
+    },
+    "value": {
+      "type": [ "string", "number" ],
+      "description": "New value to assign."
+    },
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs."
+    }
+  },
+  "required": [ "property_name", "value", "element_ids" ],
+  "additionalProperties": false
+}

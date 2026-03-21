@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_location_for_element_ids.schema.json",
+  "title": "Get Location For ElementIds",
+  "description": "Get the location point/curve for a list of element ids (almost any object). It doesn’t work with floors.",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false
+}

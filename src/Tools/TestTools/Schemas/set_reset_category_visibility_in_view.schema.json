@@ -1,0 +1,19 @@
+{
+  "$id": "schemas/set_reset_category_visibility_in_view.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Reset Category Visibility In View",
+  "description": "Reset all category visibility overrides in a view, making all categories visible again.",
+  "type": "object",
+  "properties": {
+    "view_id": {
+      "type": "integer",
+      "description": "View ElementId where category visibility will be reset."
+    }
+  },
+  "required": [ "view_id" ],
+  "examples": [
+    {
+      "view_id": 12345
+    }
+  ]
+}

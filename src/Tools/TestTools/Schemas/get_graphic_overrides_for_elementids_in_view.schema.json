@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_graphic_overrides_for_elementids_in_view.schema.json",
+  "title": "Get Graphic Overrides for Element IDs in View",
+  "description": "Get the graphics/appearance/painted (colors and pattern ids) for a list of element ids (not types, not families, ...) and their corresponding categories in a view. High priority layer for graphics in the view. Do not use with elements in linked documents.",
+  "type": "object",
+  "properties": {
+    "view_id": {
+      "type": "integer",
+      "description": "The ID of the view to query overrides from."
+    },
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to get graphic overrides for."
+    }
+  },
+  "required": [ "view_id", "element_ids" ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "view_id": 12345,
+      "element_ids": [ 111, 112, 113 ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_parameter_value_for_elements.schema.json",
+  "title": "Set Parameter Value For Elements",
+  "description": "Set one parameter/property value (almost any attribute) for each element/type id in a list (almost any object). If units are included, provide their acronyms (e.g. 2.12 m, 1987.121 ft or 7.36).",
+  "type": "object",
+  "properties": {
+    "parameter_name": {
+      "type": "string",
+      "description": "Parameter name to modify."
+    },
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element or type IDs."
+    },
+    "value": {
+      "type": [ "string", "number" ],
+      "description": "New value to set."
+    }
+  },
+  "required": [ "parameter_name", "element_ids", "value" ],
+  "additionalProperties": false
+}

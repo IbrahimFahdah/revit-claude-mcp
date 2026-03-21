@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_all_warnings_in_model.schema.json",
+  "title": "Get All Warnings In Model",
+  "description": "Get all warnings (descriptions, element ids related and severity) in the model. Warnings can affect performance and model quality.",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

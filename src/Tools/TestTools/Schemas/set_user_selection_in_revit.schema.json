@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/set_user_selection_in_revit.schema.json",
+  "title": "Set User Selection In Revit",
+  "description": "Set the element ids as the selection in Revit shown to the user. Ids must represent elements (not types, not families, not categories, ...). This overrides the current user selection. Selection must be made with the same document active used for retrieving.",
+  "type": "object",
+  "properties": {
+    "element_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "List of element IDs to select."
+    }
+  },
+  "required": [ "element_ids" ],
+  "additionalProperties": false
+}
