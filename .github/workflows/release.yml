@@ -29,7 +29,8 @@ jobs:
       - name: Stage artifacts
         shell: pwsh
         run: |
-          Copy-Item src/BuiltInTools/bin/Release/net8.0-windows/BuiltInTools.dll dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners/ -Force
+          New-Item -ItemType Directory -Path dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners -Force | Out-Null
+          Copy-Item src/BuiltInTools/bin/Release/net8.0-windows/BuiltInTools.dll dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners/
           Copy-Item src/BuiltInTools/Schemas dist/RevitClaudeConnector/Tools/Packages/BuiltIn/Schemas -Recurse -Force
           Copy-Item src/BuiltInTools/manifest.json dist/RevitClaudeConnector/Tools/Packages/BuiltIn/
           Get-ChildItem dist/RevitClaudeConnector/Resources -File | Move-Item -Destination dist/RevitClaudeConnector/ -Force
