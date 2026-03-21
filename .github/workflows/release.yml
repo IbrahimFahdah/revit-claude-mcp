@@ -48,7 +48,7 @@ jobs:
           # Revit Claude Connector ${{ github.ref_name }}
 
           For full installation instructions, visit:
-          https://github.com/your-org/RevitClaudeConnector/blob/main/docs/guide/installation.md
+          https://github.com/IbrahimFahdah/revit-claude-mcp/blob/main/docs/guide/installation.md
           "@
 
       # Create a single ZIP: plugin/ + server/ + INSTALL.md

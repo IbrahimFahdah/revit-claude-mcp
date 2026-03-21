@@ -6,7 +6,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/what-is-this' },
-      { text: 'GitHub', link: 'https://github.com/your-org/RevitClaudeConnector' }
+      { text: 'GitHub', link: 'https://github.com/IbrahimFahdah/revit-claude-mcp' }
     ],
     sidebar: [
       {
@@ -32,7 +32,7 @@ export default defineConfig({
       }
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/your-org/RevitClaudeConnector' }
+      { icon: 'github', link: 'https://github.com/IbrahimFahdah/revit-claude-mcp' }
     ]
   }
 })

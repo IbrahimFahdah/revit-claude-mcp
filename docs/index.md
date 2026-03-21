@@ -11,7 +11,7 @@ hero:
       link: /guide/what-is-this
     - theme: alt
       text: View on GitHub
-      link: https://github.com/your-org/RevitClaudeConnector
+      link: https://github.com/IbrahimFahdah/revit-claude-mcp
 
 features:
   - title: Natural Language → Revit
