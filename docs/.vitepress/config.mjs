@@ -12,7 +12,8 @@ export default defineConfig({
       {
         text: 'Introduction',
         items: [
-          { text: 'What is this?', link: '/guide/what-is-this' }
+          { text: 'What is this?', link: '/guide/what-is-this' },
+          { text: 'Installation', link: '/guide/installation' }
         ]
       },
       {

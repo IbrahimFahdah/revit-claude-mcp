@@ -11,14 +11,8 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <FrameworkReference Include="Microsoft.WindowsDesktop.App" />
     <PackageReference Include="System.ClientModel" Version="1.5.1" />
-    <Reference Include="RevitAPI">
-      <HintPath>$(ProgramFiles)\Autodesk\Revit 2026\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI">
-      <HintPath>$(ProgramFiles)\Autodesk\Revit 2026\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="2026.*" ExcludeAssets="runtime" />
+    <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="2026.*" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>

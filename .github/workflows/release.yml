@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Build the Revit plugin — outputs to dist/plugin/RevitClaudeConnector/
+      - name: Build RevitClaudePlugIn
+        run: dotnet publish src/RevitClaudePlugIn/RevitClaudePlugIn.csproj -c Release -o dist/plugin/RevitClaudeConnector --no-self-contained
+
+      # Build BuiltInTools into the same output folder so they ship together
+      - name: Build BuiltInTools
+        run: dotnet publish src/BuiltInTools/BuiltInTools.csproj -c Release -o dist/plugin/RevitClaudeConnector --no-self-contained
+
+      # The .addin manifest sits one level above the DLL folder in Revit's addins directory
+      - name: Stage .addin manifest
+        shell: pwsh
+        run: Copy-Item src/RevitClaudePlugIn/Resources/RevitClaudeConnector.addin dist/plugin/
+
+      # Stage the compiled MCP server bundle
+      - name: Stage MCP server
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path dist/server -Force | Out-Null
+          Copy-Item src/Connector.Mcp.Server/Revit.Claude.Connector.Mcp.Server.mcpb dist/server/
+
+      # Write a minimal INSTALL.md pointing to the full guide on GitHub
+      - name: Stage install instructions
+        shell: pwsh
+        run: |
+          Set-Content dist/INSTALL.md @"
+          # Revit Claude Connector ${{ github.ref_name }}
+
+          For full installation instructions, visit:
+          https://github.com/your-org/RevitClaudeConnector/blob/main/docs/guide/installation.md
+          "@
+
+      # Create a single ZIP: plugin/ + server/ + INSTALL.md
+      - name: Create release archive
+        shell: pwsh
+        run: Compress-Archive -Path dist\* -DestinationPath "revit-claude-connector-${{ github.ref_name }}.zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: revit-claude-connector-${{ github.ref_name }}.zip
+          generate_release_notes: true
