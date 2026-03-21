@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-namespace RevitClaudeConnector.ToolLoading
+namespace RevitClaudeConnector.ToolHandler
 {
     /// <summary>
     /// Collectible ALC for tool assemblies. Shares the host contracts and any already-loaded

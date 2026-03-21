@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.UI;
+using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitClaudeConnector.Common;
 using System;
@@ -7,27 +7,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-namespace RevitClaudeConnector.ToolLoading
+namespace RevitClaudeConnector.ToolHandler
 {
     /// <summary>
-    /// Discovers and invokes tools for the current Revit major version.
-    /// Looks under:
-    /// %LOCALAPPDATA%\IFADAH\RevitTools\revit-{MAJOR}\packages\{Package}\versions\{current.txt}\manifest.json
-    /// Each tool entry must specify: runner.assembly, runner.type, runner.method (default "Execute").
+    /// Discovers and invokes tools from two roots:
+    ///   1. Built-in  — {PluginDir}\Tools\Packages\{Package}\manifest.json
+    ///   2. Custom    — %LOCALAPPDATA%\RevitClaudeConnector\{RevitMajor}\Tools\Packages\{Package}\manifest.json
+    /// Custom packages are loaded after built-ins; name collisions favour the custom tool.
+    /// Each manifest.json sits directly in the package folder — no versions/ subfolder or current.txt.
     /// </summary>
     public sealed class ToolRegistry
     {
         private static readonly ConcurrentDictionary<string, CachedTool> _loadedTools = new();
 
-        public static ToolRegistry LoadForCurrentRevit(UIApplication uiapp, string rootDir = null)
+        public static ToolRegistry LoadForCurrentRevit(UIApplication uiapp, string pluginDir = null)
         {
             var major = GetRevitMajor(uiapp);
-            return LoadForRevitMajor(major, rootDir);
+            return LoadForRevitMajor(major, pluginDir);
         }
 
-        public static ToolRegistry LoadForRevitMajor(string revitMajor, string rootDir = null)
+        public static ToolRegistry LoadForRevitMajor(string revitMajor, string pluginDir = null)
         {
-            var reg = new ToolRegistry(revitMajor, rootDir);
+            var reg = new ToolRegistry(revitMajor, pluginDir);
             reg.ScanAndLoad();
             return reg;
         }
@@ -40,7 +41,7 @@ namespace RevitClaudeConnector.ToolLoading
 
         /// <summary>
         /// Invoke a tool by name.
-        /// The tool’s static entry must be: Execute(UIApplication, UIDocument, string) -> string (JSON).
+        /// The tool's entry point must be: Execute(UIApplication, UIDocument, string) -> string (JSON).
         /// Returns the JSON string produced by the tool.
         /// </summary>
         public string Invoke(string toolName, UIApplication uiapp, UIDocument uidoc, string argsJson)
@@ -49,12 +50,10 @@ namespace RevitClaudeConnector.ToolLoading
                 throw new KeyNotFoundException(
                     $"Tool '{toolName}' not found. Available: {string.Join(", ", _tools.Keys)}");
 
-            var asmPath = Path.Combine(td.PackageVersionDir, td.RunnerAssemblyRelPath);
+            var asmPath = Path.Combine(td.PackageDir, td.RunnerAssemblyRelPath);
             if (!File.Exists(asmPath))
                 throw new FileNotFoundException($"Runner assembly not found for tool '{toolName}'.", asmPath);
 
-            // Get or load the tool
-            // Use a composite key combining asmPath and RunnerTypeName
             var cacheKey = $"{asmPath}::{td.RunnerTypeName}";
 
             var cached = _loadedTools.GetOrAdd(cacheKey, _ =>
@@ -86,33 +85,38 @@ namespace RevitClaudeConnector.ToolLoading
         // ---------- Implementation ----------
 
         private readonly string _revitMajor;
-        private readonly string _rootDir;
+        private readonly string _pluginDir;
         private readonly Dictionary<string, ToolDescriptor> _tools = new(StringComparer.OrdinalIgnoreCase);
 
-        private ToolRegistry(string revitMajor, string rootDir)
+        private ToolRegistry(string revitMajor, string pluginDir)
         {
             _revitMajor = revitMajor;
-            _rootDir = rootDir ?? Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Constants.Company, "RevitTools", "app");
+            _pluginDir = pluginDir
+                ?? Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                ?? AppDomain.CurrentDomain.BaseDirectory;
         }
 
         private void ScanAndLoad()
         {
-            var packagesRoot = Path.Combine(_rootDir, $"revit-{_revitMajor}", "packages");
+            // 1. Built-in tools ship alongside the plugin DLL
+            var builtInPackages = Path.Combine(_pluginDir, "Tools", "Packages");
+            ScanPackagesRoot(builtInPackages);
+
+            // 2. Custom/user-installed tools per Revit version (overwrite built-ins on collision)
+            var customPackages = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Constants.AppDataFolder, _revitMajor, "Tools", "Packages");
+            ScanPackagesRoot(customPackages);
+        }
+
+        private void ScanPackagesRoot(string packagesRoot)
+        {
             if (!Directory.Exists(packagesRoot)) return;
 
             foreach (var pkgDir in Directory.EnumerateDirectories(packagesRoot))
             {
                 var packageName = Path.GetFileName(pkgDir);
-                var currentFile = Path.Combine(pkgDir, "current.txt");
-                if (!File.Exists(currentFile)) continue;
-
-                var currentVersion = File.ReadAllText(currentFile).Trim();
-                if (string.IsNullOrWhiteSpace(currentVersion)) continue;
-
-                var versionDir = Path.Combine(pkgDir, "versions", currentVersion);
-                var manifestPath = Path.Combine(versionDir, "manifest.json");
+                var manifestPath = Path.Combine(pkgDir, "manifest.json");
                 if (!File.Exists(manifestPath)) continue;
 
                 JObject manifest;
@@ -125,7 +129,9 @@ namespace RevitClaudeConnector.ToolLoading
                     continue;
                 }
 
+                var version = manifest.Value<string>("version") ?? "";
                 var tools = manifest["tools"] as JArray ?? new JArray();
+
                 foreach (var t in tools.OfType<JObject>())
                 {
                     var name = t.Value<string>("name");
@@ -139,27 +145,22 @@ namespace RevitClaudeConnector.ToolLoading
 
                     if (string.IsNullOrWhiteSpace(asmRel) || string.IsNullOrWhiteSpace(type)) continue;
 
-                    // Try to read MCP schema file if provided
                     McpToolSchema mcp = null;
                     if (!string.IsNullOrWhiteSpace(schemaRel))
                     {
-                        var schemaPath = Path.Combine(versionDir, schemaRel);
+                        var schemaPath = Path.Combine(pkgDir, schemaRel);
                         if (File.Exists(schemaPath))
                         {
                             try
                             {
                                 var jo = JObject.Parse(File.ReadAllText(schemaPath));
 
-                                // Minimal validation for MCP shape
-                                var mName = (string)jo["name"] ?? name; // default to tool name
+                                var mName = (string)jo["name"] ?? name;
                                 var mDesc = (string)jo["description"] ?? "";
                                 var input = jo["input_schema"] as JObject;
 
                                 if (input == null)
-                                {
-                                    // If the file was a raw JSON Schema (legacy), wrap it into MCP
-                                    input = jo; // treat whole file as input_schema
-                                }
+                                    input = jo; // legacy: treat whole file as input_schema
 
                                 mcp = new McpToolSchema
                                 {
@@ -179,8 +180,8 @@ namespace RevitClaudeConnector.ToolLoading
                     {
                         Name = name,
                         Package = packageName,
-                        Version = currentVersion,
-                        PackageVersionDir = versionDir,
+                        Version = version,
+                        PackageDir = pkgDir,
                         RunnerAssemblyRelPath = asmRel.Replace('/', Path.DirectorySeparatorChar),
                         RunnerTypeName = type,
                         RunnerMethodName = method,
@@ -193,10 +194,8 @@ namespace RevitClaudeConnector.ToolLoading
 
         private static string GetRevitMajor(UIApplication uiapp)
         {
-            // Application.VersionNumber returns e.g. "2025"
             var s = uiapp.Application?.VersionNumber ?? "";
             if (!string.IsNullOrWhiteSpace(s)) return s;
-            // Fallback: use current year if needed (unlikely)
             return DateTime.Now.Year.ToString();
         }
 
@@ -207,15 +206,15 @@ namespace RevitClaudeConnector.ToolLoading
             public string Name { get; init; } = "";
             public string Package { get; init; } = "";
             public string Version { get; init; } = "";
-            public string PackageVersionDir { get; init; } = "";
+            public string PackageDir { get; init; } = "";
             public string RunnerAssemblyRelPath { get; init; } = "";
             public string RunnerTypeName { get; init; } = "";
             public string RunnerMethodName { get; init; } = "Execute";
 
-            // Relative schema file path from manifest.json (optional, for debugging)
+            /// <summary>Relative schema file path from the package root (optional, for debugging).</summary>
             public string SchemaRelPath { get; init; }
 
-            // Parsed MCP schema (preferred for serving to Claude MCP)
+            /// <summary>Parsed MCP schema served to Claude.</summary>
             public McpToolSchema ToolSchema { get; init; }
         }
 

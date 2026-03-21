@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-namespace RevitClaudeConnector.ToolLoading
+namespace RevitClaudeConnector.ToolHandler
 {
     public sealed class ToolLoadContext : AssemblyLoadContext
     {
