@@ -1,12 +1,21 @@
 ﻿using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
-using RevitStartup.Base;
 using System;
+using System.Threading.Tasks;
 namespace RevitClaudeConnector.ToolHandler
 {
-    public class UiHandler : UiHandlerBase, IExternalEventHandler, IUIHandler
+    public class UiHandler : IExternalEventHandler
     {
         ToolRegistry toolRegistry;
+        protected string _path = "/";
+        protected string _method = "GET";
+        protected string _body = "{}";
+        protected TaskCompletionSource<string> _tcs;
+
+        public void Set(string path, string method, string body, TaskCompletionSource<string> tcs)
+        {
+            _path = path; _method = method; _body = body; _tcs = tcs;
+        }
 
         public void Execute(UIApplication uiapp)
         {
@@ -53,14 +62,14 @@ namespace RevitClaudeConnector.ToolHandler
                 if (_path == "/call" && _method == "POST")
                 {
                     var req = JObject.Parse(_body);
-                    string name = (string)(req["name"] ?? "");
+                    var name = (string)(req["name"] ?? "");
                     //var args = (JObject)(req["arguments"] ?? new JObject());
 
                     if (!toolRegistry.Tools.TryGetValue(name, out var tool)) { _tcs.TrySetResult(@"{""error"":""Unknown tool""}"); return; }
                     if (tool.ToolSchema.NeedsActiveDocument && ctx.Doc == null) { _tcs.TrySetResult(@"{""error"":""No active document""}"); return; }
 
                     var root = JObject.Parse(_body);
-                    string argsJson = root["arguments"]?.ToString(Newtonsoft.Json.Formatting.None);
+                    var argsJson = root["arguments"]?.ToString(Newtonsoft.Json.Formatting.None);
                     var ret = toolRegistry.Invoke(name, uiapp, ctx.UIDoc, argsJson);
 
                     try { _tcs.TrySetResult((JObject.Parse(ret) ?? new JObject { ["ok"] = true }).ToString()); }

@@ -1,19 +1,26 @@
-﻿using Microsoft.ApplicationInsights;
+﻿using Autodesk.Revit.UI;
+using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
-using RevitStartup.Base;
+using RevitClaudeConnector.ToolHandler;
+using System;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace RevitStartup
+namespace RevitClaudeConnector.Startup
 {
     public class AppStartup
     {
         private HttpListener _listener;
-        protected IUIHandler Handler;
+        protected UiHandler Handler;
+        private ExternalEvent _extEvent;
 
-        public AppStartup(IUIHandler UiHandler)
+        public AppStartup(UiHandler UiHandler)
         {
             Handler = UiHandler;
+            _extEvent = ExternalEvent.Create((IExternalEventHandler)Handler);
         }
 
         public bool Run(string assemblyPath)
@@ -25,24 +32,24 @@ namespace RevitStartup
 
                 // Read plugin settings and get checkUrl
                 var (pluginVersion, checkUrl, bridgeUrl) = bm.ReadCurrentPluginVersion();
-                //if (!string.IsNullOrWhiteSpace(checkUrl))
-                //{
-                //    var re = bm.RequirePlugInUpdate(new Uri(checkUrl));
-                //    if (re.updateRequired)
-                //    {
-                //        var isYes = MessageBox("PlugIn Update", "A new version of the connector is available." +
-                //            "  Do you want to download the latest version?");
-                //        if (isYes)
-                //        {
-                //            Process.Start(new ProcessStartInfo
-                //            {
-                //                FileName = re.downloadUrl,
-                //                UseShellExecute = true
-                //            });
-                //            return false;
-                //        }
-                //    }
-                //}
+                if (!string.IsNullOrWhiteSpace(checkUrl))
+                {
+                    var re = bm.RequirePlugInUpdate(new Uri(checkUrl));
+                    if (re.updateRequired)
+                    {
+                        var isYes = MessageBox("PlugIn Update", "A new version of the connector is available." +
+                            "  Do you want to download the latest version?");
+                        if (isYes)
+                        {
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = re.downloadUrl,
+                                UseShellExecute = true
+                            });
+                            return false;
+                        }
+                    }
+                }
 
                 listenerUrl = !string.IsNullOrWhiteSpace(bridgeUrl) ? bridgeUrl : "http://127.0.0.1:5578/";
                 _listener = new HttpListener();
@@ -123,20 +130,20 @@ namespace RevitStartup
             ctx.Response.OutputStream.Close();
         }
 
-        protected virtual void RaiseEvent()
+        protected void RaiseEvent()
         {
-            // throw new NotImplementedException();
+            _extEvent.Raise();
         }
 
-        protected virtual bool MessageBox(string title, string message)
+        protected void TaskDialog(string title, string message)
         {
-            return false;
-            // throw new NotImplementedException();
+            Autodesk.Revit.UI.TaskDialog.Show(title, message);
         }
 
-        protected virtual void TaskDialog(string title, string message)
+        protected bool MessageBox(string title, string message)
         {
-            //throw new NotImplementedException();
+            var res = Autodesk.Revit.UI.TaskDialog.Show(title, message, TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No);
+            return res == TaskDialogResult.Yes;
         }
     }
 }

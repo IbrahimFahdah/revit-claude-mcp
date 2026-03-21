@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 
-namespace RevitClaudeConnector
+namespace RevitClaudeConnector.Commands
 {
     public partial class ClaudePanel : UserControl
     {
@@ -101,7 +101,7 @@ namespace RevitClaudeConnector
             }
             else
             {
-                string exePath = Environment.ExpandEnvironmentVariables(
+                var exePath = Environment.ExpandEnvironmentVariables(
                     @"%LOCALAPPDATA%\Claude\Claude.exe");
                 _claudeProc = Process.Start(exePath);
                 Thread.Sleep(3000);
@@ -132,14 +132,14 @@ namespace RevitClaudeConnector
         {
             if (!_isEmbedded || _claudeHwnd == IntPtr.Zero) return;
 
-            IntPtr targetParent = _originalParent != IntPtr.Zero
+            var targetParent = _originalParent != IntPtr.Zero
                 ? _originalParent
                 : GetDesktopWindow();
 
             SetParent(_claudeHwnd, targetParent);
 
             // Restore normal style
-            int style = GetWindowLong(_claudeHwnd, GWL_STYLE);
+            var style = GetWindowLong(_claudeHwnd, GWL_STYLE);
             style |= WS_OVERLAPPEDWINDOW | WS_VISIBLE;
             SetWindowLong(_claudeHwnd, GWL_STYLE, style);
 

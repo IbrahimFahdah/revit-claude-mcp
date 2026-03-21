@@ -1,4 +1,4 @@
-﻿namespace RevitStartup.Base
+﻿namespace RevitClaudeConnector.Common
 {
     public class PluginSettings
     {

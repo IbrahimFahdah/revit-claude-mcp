@@ -1,15 +1,16 @@
 ﻿using Autodesk.Revit.UI;
 using RevitClaudeConnector.Commands;
+using RevitClaudeConnector.ToolHandler;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 
-namespace RevitClaudeConnector
+namespace RevitClaudeConnector.Startup
 {
     public class App : IExternalApplication
     {
-        RevitAppStartup _appStartup;
+        AppStartup _appStartup;
         private static readonly Guid PanelGuid =
              new Guid("8A0C52B3-4C67-4F9B-B8C2-7C7E2E8F3123");
         private ClaudePanel _panel;
@@ -18,7 +19,7 @@ namespace RevitClaudeConnector
         {
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
 
-            _appStartup = new RevitAppStartup();
+            _appStartup = new AppStartup(new UiHandler());
             _appStartup.Run(assemblyPath);
 
             var ribbon = app.CreateRibbonPanel("Revit Claude Connector");

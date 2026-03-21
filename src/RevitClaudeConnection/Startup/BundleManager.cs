@@ -1,10 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RevitClaudeConnector.Common;
+using System;
+using System.IO;
 using System.IO.Compression;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Threading;
 
-namespace RevitStartup.Base
+namespace RevitClaudeConnector.Startup
 {
     /// <summary>
     /// Global bundle manager for a single ZIP + single latest.json.
@@ -159,9 +164,9 @@ namespace RevitStartup.Base
         /// </summary>
         public (string? version, string? checkUrl, string? bridgeUrl) ReadCurrentPluginVersion()
         {
-            string assemblyPath = Assembly.GetExecutingAssembly().Location;
-            string folder = Path.GetDirectoryName(assemblyPath);
-            string settingsFile = Path.Combine(folder!, "plugin_settings.json");
+            var assemblyPath = Assembly.GetExecutingAssembly().Location;
+            var folder = Path.GetDirectoryName(assemblyPath);
+            var settingsFile = Path.Combine(folder!, "plugin_settings.json");
             if (!File.Exists(settingsFile))
                 return (null, null, null);
 

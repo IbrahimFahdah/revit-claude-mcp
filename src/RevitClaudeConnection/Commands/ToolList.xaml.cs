@@ -1,17 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
 using static RevitClaudeConnector.ToolHandler.ToolRegistry;
 
-namespace RevitClaudeConnector
+namespace RevitClaudeConnector.Commands
 {
     public partial class ToolList : Window
     {
@@ -29,7 +23,7 @@ namespace RevitClaudeConnector
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string filter = SearchBox.Text.ToLower();
+            var filter = SearchBox.Text.ToLower();
             FilteredTools.Clear();
 
             foreach (var tool in AllTools
@@ -45,7 +39,7 @@ namespace RevitClaudeConnector
         {
             if (sender is Button button && button.Tag is ToolDescriptor tool)
             {
-                string schemaJson = tool.ToolSchema.InputSchema.ToString(Newtonsoft.Json.Formatting.Indented);
+                var schemaJson = tool.ToolSchema.InputSchema.ToString(Newtonsoft.Json.Formatting.Indented);
                 MessageBox.Show(schemaJson, $"{tool.ToolSchema.Name} Schema", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
