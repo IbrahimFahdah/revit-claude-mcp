@@ -80,4 +80,5 @@ Desktop.ini
 *.exe
 *.pdb
 *.mcpb
+!src/Connector.Mcp.Server/*.mcpb
 *.zip
