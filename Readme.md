@@ -45,7 +45,7 @@ See the [Installation Guide](https://ibrahimfahdah.github.io/revit-claude-mcp/gu
 
 **Quick start:**
 1. Download the latest release ZIP from [Releases](https://github.com/IbrahimFahdah/revit-claude-mcp/releases)
-2. Copy the `plugin/` contents to `%APPDATA%\Autodesk\Revit\Addins\2026\`
+2. Copy `RevitClaudeConnector.addin` and the `RevitClaudeConnector\` folder to `%APPDATA%\Autodesk\Revit\Addins\2026\`
 3. Install `server/Revit.Claude.Connector.Mcp.Server.mcpb` via Claude Desktop → Settings → Extensions
 
 ---

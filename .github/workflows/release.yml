@@ -20,45 +20,21 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      # Build plugin — DLLs + NuGet deps + image resources → RevitClaudeConnector/
       - name: Build RevitClaudePlugIn
         run: dotnet publish src/RevitClaudePlugIn/RevitClaudePlugIn.csproj -c Release -o dist/RevitClaudeConnector --no-self-contained
 
-      # Build BuiltInTools to a temp folder, then place only the DLL into runners/
       - name: Build BuiltInTools
-        run: dotnet publish src/BuiltInTools/BuiltInTools.csproj -c Release -o dist/tmp --no-self-contained
+        run: dotnet build src/BuiltInTools/BuiltInTools.csproj -c Release
 
-      - name: Stage BuiltInTools into Tools folder
+      - name: Stage artifacts
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Path dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners -Force | Out-Null
-          Copy-Item dist/tmp/BuiltInTools.dll dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners/
-          Remove-Item dist/tmp -Recurse -Force
-
-      # Copy schemas and manifest from source
-      - name: Stage schemas and manifest
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Path dist/RevitClaudeConnector/Tools/Packages/BuiltIn/Schemas -Force | Out-Null
-          Copy-Item src/BuiltInTools/Schemas/*.schema.json dist/RevitClaudeConnector/Tools/Packages/BuiltIn/Schemas/
+          Copy-Item src/BuiltInTools/bin/Release/net8.0-windows/BuiltInTools.dll dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners/ -Force
+          Copy-Item src/BuiltInTools/Schemas dist/RevitClaudeConnector/Tools/Packages/BuiltIn/Schemas -Recurse -Force
           Copy-Item src/BuiltInTools/manifest.json dist/RevitClaudeConnector/Tools/Packages/BuiltIn/
-
-      # .addin manifest sits alongside the RevitClaudeConnector/ folder in the Addins directory
-      - name: Stage .addin manifest
-        shell: pwsh
-        run: Copy-Item src/RevitClaudePlugIn/Resources/RevitClaudeConnector.addin dist/
-
-      # Stage the compiled MCP server bundle
-      - name: Stage MCP server
-        shell: pwsh
-        run: |
+          Copy-Item src/RevitClaudePlugIn/Resources/RevitClaudeConnector.addin dist/
           New-Item -ItemType Directory -Path dist/server -Force | Out-Null
           Copy-Item src/Connector.Mcp.Server/Revit.Claude.Connector.Mcp.Server.mcpb dist/server/
-
-      # Write a minimal INSTALL.md pointing to the full guide on GitHub
-      - name: Stage install instructions
-        shell: pwsh
-        run: |
           Set-Content dist/INSTALL.md @"
           # Revit Claude Connector ${{ github.ref_name }}
 
@@ -66,7 +42,6 @@ jobs:
           https://github.com/IbrahimFahdah/revit-claude-mcp/blob/main/docs/guide/installation.md
           "@
 
-      # Create a single ZIP with the full structure
       - name: Create release archive
         shell: pwsh
         run: Compress-Archive -Path dist\* -DestinationPath "revit-claude-connector-${{ github.ref_name }}.zip"
