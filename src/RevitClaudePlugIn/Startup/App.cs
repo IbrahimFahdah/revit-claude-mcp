@@ -96,7 +96,7 @@ namespace RevitClaudePlugIn.Startup
                 {
                     _panel.IsPanelVisible = args.DockableFrameShown;
                     if (args.DockableFrameShown)
-                        await _panel.AttachClaude();
+                        await _panel.AttachClaude(silent: !_panel.StartupComplete);
                     else
                         _panel.ReleaseClaude();
                 }

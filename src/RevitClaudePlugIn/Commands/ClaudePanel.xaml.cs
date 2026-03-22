@@ -51,6 +51,8 @@ namespace RevitClaudePlugIn.Commands
         private Process _claudeProc;
         private IntPtr _claudeHwnd = IntPtr.Zero;
         private bool _isEmbedded;
+        private bool _startupComplete;
+        internal bool StartupComplete => _startupComplete;
         internal bool IsPanelVisible { get; set; }
 
         public ClaudePanel()
@@ -65,11 +67,15 @@ namespace RevitClaudePlugIn.Commands
         {
             try
             {
-                await AttachClaude();
+                await AttachClaude(silent: true);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("Claude embedding error: " + ex.Message);
+            }
+            finally
+            {
+                _startupComplete = true;
             }
         }
 
@@ -160,7 +166,7 @@ namespace RevitClaudePlugIn.Commands
             return null;
         }
 
-        public async Task AttachClaude()
+        public async Task AttachClaude(bool silent = false)
         {
             if (_isEmbedded) return;
 
@@ -196,7 +202,8 @@ namespace RevitClaudePlugIn.Commands
 
             if (_claudeProc == null)
             {
-                MessageBox.Show("Claude did not start within the expected time.", "Claude Not Ready", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (!silent) MessageBox.Show("Claude did not start within the expected time.", "Claude Not Ready", MessageBoxButton.OK, MessageBoxImage.Warning);
+                else Debug.WriteLine("Claude did not start within the expected time.");
                 return;
             }
 
@@ -209,13 +216,15 @@ namespace RevitClaudePlugIn.Commands
 
             if (_claudeHwnd == IntPtr.Zero)
             {
-                MessageBox.Show("Claude window not found. Try opening Claude manually.", "Claude Not Ready", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (!silent) MessageBox.Show("Claude window not found. Try opening Claude manually.", "Claude Not Ready", MessageBoxButton.OK, MessageBoxImage.Warning);
+                else Debug.WriteLine("Claude window not found.");
                 return;
             }
 
             if (PresentationSource.FromVisual(ClaudeHost) is not HwndSource source)
             {
-                MessageBox.Show("Claude panel is not yet rendered. Try reopening the panel.", "Claude Not Ready", MessageBoxButton.OK, MessageBoxImage.Warning);
+                if (!silent) MessageBox.Show("Claude panel is not yet rendered. Try reopening the panel.", "Claude Not Ready", MessageBoxButton.OK, MessageBoxImage.Warning);
+                else Debug.WriteLine("Claude panel host is not yet rendered.");
                 return;
             }
 
