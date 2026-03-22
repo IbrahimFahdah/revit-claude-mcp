@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_elements_in_room.schema.json",
+  "title": "Get Elements In Room",
+  "description": "Return all elements spatially located inside a given room.",
+  "type": "object",
+  "properties": {
+    "roomId": {
+      "type": "integer",
+      "description": "The element ID of the room to query."
+    }
+  },
+  "required": ["roomId"]
+}

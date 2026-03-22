@@ -1,7 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using System.Text.Json.Nodes;
 
-namespace Tools
+namespace CustomTools
 {
     public sealed class HelloWorld
     {

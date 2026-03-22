@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/get_linked_models.schema.json",
+  "title": "Get Linked Models",
+  "description": "Return all linked RVT/IFC models in the current document, including their load status and file path.",
+  "type": "object",
+  "properties": {}
+}

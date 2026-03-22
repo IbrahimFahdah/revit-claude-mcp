@@ -2,7 +2,7 @@
 using Autodesk.Revit.UI;
 using System.Text.Json.Nodes;
 
-namespace Tools
+namespace CustomTools
 {
     public sealed class GetProjectInfo
     {
@@ -10,7 +10,7 @@ namespace Tools
         {
             var doc = uidoc.Document;
 
-            int elementCount = new FilteredElementCollector(doc)
+            var elementCount = new FilteredElementCollector(doc)
                 .WhereElementIsNotElementType()
                 .ToElementIds().Count;
 
