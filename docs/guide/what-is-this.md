@@ -28,6 +28,7 @@ Working with Revit daily? You've probably hit that moment where a repetitive tas
 - Natural language commands with the flexibility to chain tools and automate multi-step tasks. 
 - The real differentiator isn't just *getting* data out of Revit: it's what happens next. An AI connector keeps going. It can summarize findings, flag anomalies, generate a formatted report, produce a CSV, draft an email to your team, or answer follow-up questions, all in the same conversation. 
 - Trade-off: slower than native commands. Best for complex one-off operations, cross-discipline analysis, exploration, and anywhere the presentation of results matters as much as the results themselves.
+
 ---
 
 ## The Two Moving Parts

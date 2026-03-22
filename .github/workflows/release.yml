@@ -43,7 +43,7 @@ jobs:
           # Revit Claude Connector ${{ github.ref_name }}
 
           For full installation instructions, visit:
-          https://github.com/IbrahimFahdah/revit-claude-mcp/blob/main/docs/guide/installation.md
+          https://ibrahimfahdah.github.io/revit-claude-mcp/guide/installation.html
           "@
 
       - name: Create release archive

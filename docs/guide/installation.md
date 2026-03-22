@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Autodesk Revit 2026
+- Autodesk Revit 2025 or above (older versions require compiling the plugin)
 - [Claude Desktop](https://claude.ai/download) (latest)
 
 ---
@@ -28,7 +28,7 @@ revit-claude-connector-vX.X.X.zip
 
 1. Open File Explorer and navigate to your Revit add-ins folder:
    ```
-   %APPDATA%\Autodesk\Revit\Addins\2026\
+   %APPDATA%\Autodesk\Revit\Addins\2025\
    ```
    *(Paste that path directly into the File Explorer address bar)*
 
@@ -38,7 +38,7 @@ revit-claude-connector-vX.X.X.zip
 
    The final layout should look like:
    ```
-   %APPDATA%\Autodesk\Revit\Addins\2026\
+   %APPDATA%\Autodesk\Revit\Addins\2025\
    ├── RevitClaudeConnector.addin
    └── RevitClaudeConnector\
        ├── RevitClaudePlugIn.dll
@@ -46,7 +46,7 @@ revit-claude-connector-vX.X.X.zip
        └── ...
    ```
 
-3. Launch (or restart) Revit 2026. A **Claude** panel will appear in the ribbon.
+3. Launch (or restart) Revit 2025. A **Claude** panel will appear in the ribbon.
 
 ---
 
@@ -70,6 +70,6 @@ revit-claude-connector-vX.X.X.zip
 
 | Problem | Fix |
 |---|---|
-| Plugin doesn't appear in Revit | Verify the `.addin` file and `RevitClaudeConnector\` folder are both in the `Addins\2026\` directory |
+| Plugin doesn't appear in Revit | Verify the `.addin` file and `RevitClaudeConnector\` folder are both in the `Addins\2025\` directory |
 | MCP server not connecting | Ensure Claude Desktop has been restarted after the extension was installed |
 | Revit shows a security warning | Click **Always Load** to trust the add-in |

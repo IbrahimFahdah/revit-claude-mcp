@@ -14,7 +14,8 @@ export default defineConfig({
         text: 'Introduction',
         items: [
           { text: 'What is this?', link: '/guide/what-is-this' },
-          { text: 'Installation', link: '/guide/installation' }
+          { text: 'Installation', link: '/guide/installation' },
+          { text: 'User Guide', link: '/guide/user-guide' }
         ]
       },
       {
@@ -28,7 +29,15 @@ export default defineConfig({
       {
         text: 'The Tool System',
         items: [
-          { text: 'The Tool Registry', link: '/guide/tool-registry' }
+          { text: 'The Tool Registry', link: '/guide/tool-registry' },
+          { text: 'Built-In Tools', link: '/guide/built-in-tools' },
+          { text: 'Custom Tools', link: '/guide/custom-tools' }
+        ]
+      },
+      {
+        text: 'Community',
+        items: [
+          { text: 'Contributing', link: '/guide/contributing' }
         ]
       }
     ],

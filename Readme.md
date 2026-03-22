@@ -67,6 +67,18 @@ mcpb pack
 
 ---
 
+## Contributing
+
+Contributions are welcome! There are three main ways to get involved:
+
+- **Enhance the built-in tools** — improve or extend the 46 tools in `src/BuiltInTools/` (better queries, new parameters, richer output, bug fixes).
+- **Publish custom tools** — build and share your own tool packages so other users can drop them into their local `Packages\` folder. See the [Custom Tools guide](https://ibrahimfahdah.github.io/revit-claude-mcp/guide/custom-tools).
+- **Improve the plugin itself** — work on the MCP server, the Revit add-in, the UI, documentation, or anything else that makes the connector better.
+
+Open an issue to discuss ideas, or submit a pull request directly.
+
+---
+
 ## Documentation
 
 Full documentation at **https://ibrahimfahdah.github.io/revit-claude-mcp/**
