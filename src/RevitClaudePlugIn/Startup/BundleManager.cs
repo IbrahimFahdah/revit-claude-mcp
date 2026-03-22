@@ -39,7 +39,7 @@ namespace RevitClaudePlugIn.Startup
             Directory.CreateDirectory(RootDir);
         }
 
-        public (bool updateRequired, string downloadUrl, string releaseNotes) RequirePlugInUpdate(Uri latestJsonUrl)
+        public (bool updateRequired, string downloadUrl) RequirePlugInUpdate(Uri latestJsonUrl)
         {
             using var _ = AcquireGlobalLock();
             var (currentVersion, _, _) = ReadCurrentPluginVersion();
@@ -52,14 +52,14 @@ namespace RevitClaudePlugIn.Startup
                 Version.TryParse(latestVersion, out var lv) &&
                 lv <= cv)
             {
-                return (false, null, null);
+                return (false, null);
             }
 
-            // Prefer a .zip asset; fall back to the release page URL
             var asset = latest.assets.Find(a => a.name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase));
-            var downloadUrl = asset?.browser_download_url ?? latest.html_url;
+            var downloadUrl = asset?.browser_download_url
+                ?? $"https://github.com/IbrahimFahdah/revit-claude-mcp/releases/latest";
 
-            return (true, downloadUrl, latest.body);
+            return (true, downloadUrl);
         }
 
         public bool RequireToolsUpdate(Uri latestJsonUrl)

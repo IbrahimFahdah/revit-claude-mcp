@@ -38,8 +38,7 @@ namespace RevitClaudePlugIn.Startup
                     if (re.updateRequired)
                     {
                         var isYes = MessageBox("PlugIn Update",
-                            "A new version of the connector is available. Do you want to download it?\n\n" +
-                            re.releaseNotes);
+                            "A new version of the connector is available. Do you want to download it?");
                         if (isYes)
                         {
                             Process.Start(new ProcessStartInfo
