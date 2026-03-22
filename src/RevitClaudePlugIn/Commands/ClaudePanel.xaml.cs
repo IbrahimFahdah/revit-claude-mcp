@@ -137,6 +137,25 @@ namespace RevitClaudePlugIn.Commands
             _isEmbedded = true;
         }
 
+        public async Task RestartClaude()
+        {
+            var wasEmbedded = _isEmbedded;
+
+            ReleaseClaude();
+
+            // Kill all running Claude processes
+            foreach (var p in Process.GetProcessesByName("Claude"))
+            {
+                try { p.Kill(); p.WaitForExit(2000); } catch { }
+            }
+            _claudeProc = null;
+            _claudeHwnd = IntPtr.Zero;
+
+            // Relaunch and re-attach if panel was visible
+            if (wasEmbedded)
+                await AttachClaude();
+        }
+
         public void ReleaseClaude()
         {
             if (!_isEmbedded || _claudeHwnd == IntPtr.Zero) return;

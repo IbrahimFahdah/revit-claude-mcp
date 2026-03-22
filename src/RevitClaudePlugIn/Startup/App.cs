@@ -17,6 +17,9 @@ namespace RevitClaudePlugIn.Startup
         /// <summary>The running UiHandler, used by ReloadToolsCommand.</summary>
         public static UiHandler ActiveHandler { get; private set; }
 
+        /// <summary>The dockable Claude panel, used by RestartClaudeCommand.</summary>
+        public static ClaudePanel ActivePanel { get; private set; }
+
         public Result OnStartup(UIControlledApplication app)
         {
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
@@ -44,6 +47,13 @@ namespace RevitClaudePlugIn.Startup
             toolListbtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ToolsBtn16.png")));
             ribbon.AddItem(toolListbtn);
 
+            var restartBtn = new PushButtonData("restartBtn", "Restart Claude", asmPath, "RevitClaudePlugIn.Commands.RestartClaudeCommand");
+            restartBtn.ToolTip = "Hard-restart the Claude desktop application.";
+            restartBtn.LongDescription = "Kills Claude if running, relaunches it, and re-attaches it to the panel if the panel is visible.";
+            restartBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ReloadBtn32.png")));
+            restartBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ReloadBtn16.png")));
+            ribbon.AddItem(restartBtn);
+
             var reloadBtn = new PushButtonData("reloadBtn", "Reload Tools", asmPath, "RevitClaudePlugIn.Commands.ReloadToolsCommand");
             reloadBtn.ToolTip = "Reload all tool packages from disk without restarting Revit.";
             reloadBtn.LongDescription = "Use this to refresh loaded tools after adding, updating, or replacing tool packages.";
@@ -53,6 +63,7 @@ namespace RevitClaudePlugIn.Startup
 
             // Register Dockable Panel
             _panel = new ClaudePanel();
+            ActivePanel = _panel;
             var provider = new ClaudePanelProvider(_panel);
             app.RegisterDockablePane(new DockablePaneId(Constants.PanelGuid), "Claude AI", provider);
 
