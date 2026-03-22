@@ -26,12 +26,13 @@ namespace RevitClaudePlugIn.Startup
             _appStartup = new AppStartup(ActiveHandler);
             _appStartup.Run(assemblyPath);
 
-            var ribbon = app.CreateRibbonPanel("Revit Claude Connector");
+            app.CreateRibbonTab("Claude Connector");
+            var ribbon = app.CreateRibbonPanel("Claude Connector", "Revit Claude Connector");
             var asmPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
             var btn = new PushButtonData("ClaudeBtn", "Claude", asmPath, "RevitClaudePlugIn.Commands.ClaudeCommand");
-            btn.ToolTip = "Revit Claude Connector from IFADAH";
-            btn.LongDescription = "This tool allows you to call many Revit functionalities from Claude.";
+            btn.ToolTip = "Open Claude Panel";
+            btn.LongDescription = "Host Claude inside a Revit panel,Otherwise, use Claude as a separate application.";
             var iconsFolder = Path.GetDirectoryName(assemblyPath);
             btn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn32.png")));
             btn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn16.png")));
@@ -46,7 +47,9 @@ namespace RevitClaudePlugIn.Startup
 
             var reloadBtn = new PushButtonData("reloadBtn", "Reload Tools", asmPath, "RevitClaudePlugIn.Commands.ReloadToolsCommand");
             reloadBtn.ToolTip = "Reload all tool packages from disk without restarting Revit.";
-            reloadBtn.LongDescription = "Use this after adding, updating, or replacing a tool package DLL.";
+            reloadBtn.LongDescription = "Use this to refresh loaded tools after adding, updating, or replacing tool packages.";
+            reloadBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ReloadBtn32.png")));
+            reloadBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ReloadBtn16.png")));
             ribbon.AddItem(reloadBtn);
 
             // Register Dockable Panel
