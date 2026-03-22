@@ -34,7 +34,6 @@ To improve the performance and token usage of the Revit Claude connector, you ca
 
 ![ClaudeToolControl](/ClaudeToolControl.png)
 
-
 ## Demos
 [🔗Introducing RevitClaudeConnector (Part 1) ](https://www.linkedin.com/posts/dr-ibrahim-fahdah-13aa80a4_introducing-revitclaudeconnector-part-activity-7381345934884093952-BzG3/)
 

@@ -15,7 +15,8 @@ export default defineConfig({
         items: [
           { text: 'What is this?', link: '/guide/what-is-this' },
           { text: 'Installation', link: '/guide/installation' },
-          { text: 'User Guide', link: '/guide/user-guide' }
+          { text: 'User Guide', link: '/guide/user-guide' },
+          { text: 'Token Efficiency', link: '/guide/token-efficiency' }
         ]
       },
       {
