@@ -27,9 +27,6 @@ namespace RevitClaudePlugIn.Commands
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr GetDesktopWindow();
-
-        [DllImport("user32.dll", SetLastError = true)]
         static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -41,13 +38,15 @@ namespace RevitClaudePlugIn.Commands
         [DllImport("user32.dll")]
         static extern IntPtr GetParent(IntPtr hWnd);
 
+        [DllImport("user32.dll")]
+        static extern bool IsWindow(IntPtr hWnd);
+
         private const int GWL_STYLE = -16;
         private const int WS_OVERLAPPEDWINDOW = 0x00CF0000;
+        private const int WS_CHILD = 0x40000000;
         private const int WS_VISIBLE = 0x10000000;
         private const int SW_RESTORE = 9;
 
-
-        private IntPtr _originalParent = IntPtr.Zero;
 
         private Process _claudeProc;
         private IntPtr _claudeHwnd = IntPtr.Zero;
@@ -201,8 +200,11 @@ namespace RevitClaudePlugIn.Commands
                 return;
             }
 
+            _claudeProc.Refresh();
             _claudeHwnd = _claudeProc.MainWindowHandle;
-            if (_claudeHwnd == IntPtr.Zero)
+
+            // Electron apps sometimes recreate the main window during startup — validate and fallback
+            if (_claudeHwnd == IntPtr.Zero || !IsWindow(_claudeHwnd))
                 _claudeHwnd = FindWindow(null, "Claude");
 
             if (_claudeHwnd == IntPtr.Zero)
@@ -217,7 +219,6 @@ namespace RevitClaudePlugIn.Commands
                 return;
             }
 
-            _originalParent = GetParent(_claudeHwnd);
             SetParent(_claudeHwnd, source.Handle);
 
             // Fit immediately
@@ -250,14 +251,12 @@ namespace RevitClaudePlugIn.Commands
         {
             if (!_isEmbedded || _claudeHwnd == IntPtr.Zero) return;
 
-            var targetParent = _originalParent != IntPtr.Zero
-                ? _originalParent
-                : GetDesktopWindow();
+            // NULL parent promotes the window back to a true top-level window
+            SetParent(_claudeHwnd, IntPtr.Zero);
 
-            SetParent(_claudeHwnd, targetParent);
-
-            // Restore normal style
+            // Remove WS_CHILD (set by SetParent) and restore normal overlapped window style
             var style = GetWindowLong(_claudeHwnd, GWL_STYLE);
+            style &= ~WS_CHILD;
             style |= WS_OVERLAPPEDWINDOW | WS_VISIBLE;
             SetWindowLong(_claudeHwnd, GWL_STYLE, style);
 
