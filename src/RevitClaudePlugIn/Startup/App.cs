@@ -20,12 +20,16 @@ namespace RevitClaudePlugIn.Startup
         /// <summary>The dockable Claude panel, used by RestartClaudeCommand.</summary>
         public static ClaudePanel ActivePanel { get; private set; }
 
+        /// <summary>The app startup instance, used by StatusCommand.</summary>
+        public static AppStartup ActiveStartup { get; private set; }
+
         public Result OnStartup(UIControlledApplication app)
         {
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
 
             ActiveHandler = new UiHandler();
             _appStartup = new AppStartup(ActiveHandler);
+            ActiveStartup = _appStartup;
             _appStartup.Run(assemblyPath);
 
             app.CreateRibbonTab("Claude Connector");
@@ -46,6 +50,13 @@ namespace RevitClaudePlugIn.Startup
             toolListbtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ToolsBtn32.png")));
             toolListbtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ToolsBtn16.png")));
             ribbon.AddItem(toolListbtn);
+
+            var statusBtn = new PushButtonData("statusBtn", "Status", asmPath, "RevitClaudePlugIn.Commands.StatusCommand");
+            statusBtn.ToolTip = "Show Claude Connector bridge status.";
+            statusBtn.LongDescription = "Displays the bridge URL, listening state, and number of loaded tools.";
+            statusBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn32.png")));
+            statusBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn16.png")));
+            ribbon.AddItem(statusBtn);
 
             var restartBtn = new PushButtonData("restartBtn", "Restart Claude", asmPath, "RevitClaudePlugIn.Commands.RestartClaudeCommand");
             restartBtn.ToolTip = "Hard-restart the Claude desktop application.";

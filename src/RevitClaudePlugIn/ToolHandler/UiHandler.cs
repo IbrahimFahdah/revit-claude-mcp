@@ -99,6 +99,8 @@ namespace RevitClaudePlugIn.ToolHandler
             return toolRegistry.Tools.Count;
         }
 
+        public int ToolCount => toolRegistry?.Tools.Count ?? 0;
+
         public string GetName() => "Claude Revit Bridge";
     }
 }

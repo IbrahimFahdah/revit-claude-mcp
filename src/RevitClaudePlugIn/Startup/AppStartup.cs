@@ -15,6 +15,9 @@ namespace RevitClaudePlugIn.Startup
         protected UiHandler Handler;
         private ExternalEvent _extEvent;
 
+        public bool IsRunning => _listener?.IsListening == true;
+        public string BridgeUrl { get; private set; } = "http://127.0.0.1:5578/";
+
         public AppStartup(UiHandler UiHandler)
         {
             Handler = UiHandler;
@@ -50,11 +53,11 @@ namespace RevitClaudePlugIn.Startup
                 }
 
                 listenerUrl = !string.IsNullOrWhiteSpace(bridgeUrl) ? bridgeUrl : "http://127.0.0.1:5578/";
+                BridgeUrl = listenerUrl;
                 _listener = new HttpListener();
                 _listener.Prefixes.Add(listenerUrl);
 
                 _listener.Start();
-                TaskDialog("Claude Connector", "Claude Connector started successfully");
             }
             catch (HttpListenerException ex)
             {
