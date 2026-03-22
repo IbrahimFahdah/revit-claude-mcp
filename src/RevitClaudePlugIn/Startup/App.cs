@@ -37,10 +37,10 @@ namespace RevitClaudePlugIn.Startup
             var ribbon = app.CreateRibbonPanel("Claude Connector", "Revit Claude Connector");
             var asmPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-            var btn = new PushButtonData("ClaudeBtn", "Claude", asmPath, "RevitClaudePlugIn.Commands.ClaudeCommand");
+            var btn = new PushButtonData("ClaudeBtn", "Claude Panel", asmPath, "RevitClaudePlugIn.Commands.ClaudeCommand");
             btn.ToolTip = "Open Claude Panel";
             btn.LongDescription = "Host Claude inside a Revit panel,Otherwise, use Claude as a separate application.";
-            var iconsFolder = Path.GetDirectoryName(assemblyPath);
+            var iconsFolder = Path.Combine(Path.GetDirectoryName(assemblyPath), "Resources");
             btn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn32.png")));
             btn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn16.png")));
             ribbon.AddItem(btn);
@@ -55,8 +55,8 @@ namespace RevitClaudePlugIn.Startup
             var restartBtn = new PushButtonData("restartBtn", "Restart Claude", asmPath, "RevitClaudePlugIn.Commands.RestartClaudeCommand");
             restartBtn.ToolTip = "Hard-restart the Claude desktop application.";
             restartBtn.LongDescription = "Kills Claude if running, relaunches it, and re-attaches it to the panel if the panel is visible.";
-            restartBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ReloadBtn32.png")));
-            restartBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ReloadBtn16.png")));
+            restartBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "RunClaudeBtn32.png")));
+            restartBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "RunClaudeBtn16.png")));
             ribbon.AddItem(restartBtn);
 
             var reloadBtn = new PushButtonData("reloadBtn", "Reload Tools", asmPath, "RevitClaudePlugIn.Commands.ReloadToolsCommand");
@@ -72,15 +72,15 @@ namespace RevitClaudePlugIn.Startup
             var statusBtn = new PushButtonData("statusBtn", "Status", asmPath, "RevitClaudePlugIn.Commands.StatusCommand");
             statusBtn.ToolTip = "Show Claude Connector bridge status.";
             statusBtn.LongDescription = "Displays the bridge URL, listening state, and number of loaded tools.";
-            statusBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn32.png")));
-            statusBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn16.png")));
+            statusBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "StatusBtn32.png")));
+            statusBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "StatusBtn16.png")));
             helpRibbon.AddItem(statusBtn);
 
             var githubBtn = new PushButtonData("githubBtn", "GitHub", asmPath, "RevitClaudePlugIn.Commands.OpenGitHubCommand");
             githubBtn.ToolTip = "Open the project GitHub repository.";
             githubBtn.LongDescription = "Opens the Revit Claude MCP Connector repository on GitHub in your browser.";
-            githubBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn32.png")));
-            githubBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn16.png")));
+            githubBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "GitHubBtn32.png")));
+            githubBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "GitHubBtn16.png")));
             helpRibbon.AddItem(githubBtn);
 
             // Register Dockable Panel

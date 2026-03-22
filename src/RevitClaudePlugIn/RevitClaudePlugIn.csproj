@@ -17,21 +17,39 @@
   <ItemGroup>
     <None Update="Resources\ClaudeBtn16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\ClaudeBtn16.png</TargetPath>
     </None>
     <None Update="Resources\ClaudeBtn32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\ClaudeBtn32.png</TargetPath>
     </None>
     <None Update="Resources\ToolsBtn16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\ToolsBtn16.png</TargetPath>
     </None>
     <None Update="Resources\ToolsBtn32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\ToolsBtn32.png</TargetPath>
     </None>
     <None Update="Resources\ReloadBtn16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\ReloadBtn16.png</TargetPath>
     </None>
     <None Update="Resources\ReloadBtn32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\ReloadBtn32.png</TargetPath>
+    </None>
+    <None Update="Resources\github-logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\github-logo.png</TargetPath>
+    </None>
+    <None Update="Resources\rocket.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\rocket.png</TargetPath>
+    </None>
+    <None Update="Resources\clipboard.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\clipboard.png</TargetPath>
     </None>
   </ItemGroup>
 
