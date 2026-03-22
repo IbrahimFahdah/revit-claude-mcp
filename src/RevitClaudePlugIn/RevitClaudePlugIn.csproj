@@ -39,17 +39,29 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>Resources\ReloadBtn32.png</TargetPath>
     </None>
-    <None Update="Resources\github-logo.png">
+    <None Update="Resources\RunClaudeBtn16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>Resources\github-logo.png</TargetPath>
+      <TargetPath>Resources\RunClaudeBtn16.png</TargetPath>
     </None>
-    <None Update="Resources\rocket.png">
+    <None Update="Resources\RunClaudeBtn32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>Resources\rocket.png</TargetPath>
+      <TargetPath>Resources\RunClaudeBtn32.png</TargetPath>
     </None>
-    <None Update="Resources\clipboard.png">
+    <None Update="Resources\GitHubBtn32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>Resources\clipboard.png</TargetPath>
+      <TargetPath>Resources\GitHubBtn32.png</TargetPath>
+    </None>
+    <None Update="Resources\GitHubBtn16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\GitHubBtn16.png</TargetPath>
+    </None>
+    <None Update="Resources\StatusBtn32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\StatusBtn32.png</TargetPath>
+    </None>
+    <None Update="Resources\StatusBtn16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Resources\StatusBtn16.png</TargetPath>
     </None>
   </ItemGroup>
 
