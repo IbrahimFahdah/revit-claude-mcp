@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
-  "CheckUrl": "https://drive.google.com/uc?export=download&id=1zwtsG1fC0ovpAJJPe1LHVJ1AyCSLVpRO",
-  "BridgeUrl": "http://127.0.0.1:5578/"
+    "version": "1.0.1",
+    "CheckUrl": "https://api.github.com/repos/IbrahimFahdah/revit-claude-mcp/releases/latest",
+    "BridgeUrl": "http://127.0.0.1:5578/"
 }
