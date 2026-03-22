@@ -56,12 +56,12 @@ namespace RevitClaudePlugIn.Startup
             var provider = new ClaudePanelProvider(_panel);
             app.RegisterDockablePane(new DockablePaneId(Constants.PanelGuid), "Claude AI", provider);
 
-            app.DockableFrameVisibilityChanged += (sender, args) =>
+            app.DockableFrameVisibilityChanged += async (sender, args) =>
             {
                 if (args.PaneId == new DockablePaneId(Constants.PanelGuid))
                 {
                     if (args.DockableFrameShown)
-                        _panel.AttachClaude();
+                        await _panel.AttachClaude();
                     else
                         _panel.ReleaseClaude();
                 }

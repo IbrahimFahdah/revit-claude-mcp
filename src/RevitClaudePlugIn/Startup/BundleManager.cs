@@ -49,6 +49,7 @@ namespace RevitClaudePlugIn.Startup
         private static GitHubRelease DownloadLatestPlugIn(Uri url)
         {
             using var http = new HttpClient();
+            http.Timeout = TimeSpan.FromSeconds(5);
             http.DefaultRequestHeaders.Add("User-Agent", "RevitClaudeConnector");
             var json = http.GetStringAsync(url).GetAwaiter().GetResult();
             var obj = JsonConvert.DeserializeObject<GitHubRelease>(json)

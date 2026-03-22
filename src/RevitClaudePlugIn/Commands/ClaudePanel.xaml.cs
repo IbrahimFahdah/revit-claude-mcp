@@ -1,7 +1,9 @@
-﻿using System;
+﻿// NOTE: The window embedding feature in this file is unofficial and not affiliated with or endorsed by Anthropic.
+
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -57,11 +59,11 @@ namespace RevitClaudePlugIn.Commands
             SizeChanged += OnSizeChanged;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                AttachClaude();
+                await AttachClaude();
             }
             catch (Exception ex)
             {
@@ -91,7 +93,7 @@ namespace RevitClaudePlugIn.Commands
             }
         }
 
-        public void AttachClaude()
+        public async Task AttachClaude()
         {
             // Check if Claude already running
             var existing = Process.GetProcessesByName("Claude");
@@ -104,7 +106,14 @@ namespace RevitClaudePlugIn.Commands
                 var exePath = Environment.ExpandEnvironmentVariables(
                     @"%LOCALAPPDATA%\Claude\Claude.exe");
                 _claudeProc = Process.Start(exePath);
-                Thread.Sleep(3000);
+
+                // Poll until Claude's window appears (up to 15s)
+                for (int i = 0; i < 30; i++)
+                {
+                    await Task.Delay(500);
+                    _claudeProc.Refresh();
+                    if (_claudeProc.MainWindowHandle != IntPtr.Zero) break;
+                }
             }
 
             _claudeHwnd = _claudeProc.MainWindowHandle;
