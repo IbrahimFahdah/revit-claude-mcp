@@ -96,6 +96,28 @@ namespace RevitClaudePlugIn.ToolHandler
                 ?? AppDomain.CurrentDomain.BaseDirectory;
         }
 
+        /// <summary>
+        /// Unloads all cached assemblies (releasing file locks) then re-scans tool packages.
+        /// Safe to call when replacing a DLL at the same path: the collectible ALCs are
+        /// fully unloaded via GC before the new DLL is loaded.
+        /// </summary>
+        public void Reload()
+        {
+            // 1. Drop all references to cached ALCs so they become eligible for collection.
+            _loadedTools.Clear();
+
+            // 2. Force two GC passes: first triggers ALC finalization/unloading,
+            //    second collects objects freed during finalization.
+            //    This releases the file locks on the runner DLLs.
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+
+            // 3. Clear old tool metadata and re-scan from disk.
+            _tools.Clear();
+            ScanAndLoad();
+        }
+
         private void ScanAndLoad()
         {
             // 1. Built-in tools ship alongside the plugin DLL

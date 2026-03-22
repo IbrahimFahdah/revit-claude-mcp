@@ -15,11 +15,15 @@ namespace RevitClaudePlugIn.Startup
              new Guid("8A0C52B3-4C67-4F9B-B8C2-7C7E2E8F3123");
         private ClaudePanel _panel;
 
+        /// <summary>The running UiHandler, used by ReloadToolsCommand.</summary>
+        public static UiHandler ActiveHandler { get; private set; }
+
         public Result OnStartup(UIControlledApplication app)
         {
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
 
-            _appStartup = new AppStartup(new UiHandler());
+            ActiveHandler = new UiHandler();
+            _appStartup = new AppStartup(ActiveHandler);
             _appStartup.Run(assemblyPath);
 
             var ribbon = app.CreateRibbonPanel("Revit Claude Connector");
@@ -39,6 +43,11 @@ namespace RevitClaudePlugIn.Startup
             toolListbtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ToolsBtn32.png")));
             toolListbtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ToolsBtn16.png")));
             ribbon.AddItem(toolListbtn);
+
+            var reloadBtn = new PushButtonData("reloadBtn", "Reload Tools", asmPath, "RevitClaudePlugIn.Commands.ReloadToolsCommand");
+            reloadBtn.ToolTip = "Reload all tool packages from disk without restarting Revit.";
+            reloadBtn.LongDescription = "Use this after adding, updating, or replacing a tool package DLL.";
+            ribbon.AddItem(reloadBtn);
 
             // Register Dockable Panel
             _panel = new ClaudePanel();

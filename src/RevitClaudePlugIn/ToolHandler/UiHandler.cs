@@ -85,6 +85,20 @@ namespace RevitClaudePlugIn.ToolHandler
             }
         }
 
+        /// <summary>
+        /// Reloads all tool packages from disk. If the registry has not been initialised yet
+        /// it is created now. Returns the number of tools available after the reload.
+        /// </summary>
+        public int ReloadTools(UIApplication uiapp)
+        {
+            if (toolRegistry == null)
+                toolRegistry = ToolRegistry.LoadForCurrentRevit(uiapp);
+            else
+                toolRegistry.Reload();
+
+            return toolRegistry.Tools.Count;
+        }
+
         public string GetName() => "Claude Revit Bridge";
     }
 }
