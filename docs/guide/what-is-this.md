@@ -12,6 +12,24 @@ Claude reads your question, picks the right Revit tool, runs it inside your live
 
 ---
 
+## AI Assistance in Revit
+
+![AI Assistance in Revit](/AI-Assistance-in-Revit.png)
+
+Working with Revit daily? You've probably hit that moment where a repetitive task makes you think "there has to be a better way." Here's how the automation options stack up:
+
+**📊 Dynamo** — The visual programming powerhouse. Drag nodes, connect wires, see your logic flow. Perfect for BIM managers who want to build reusable workflows without deep coding knowledge. Great for geometric operations and data manipulation. The catch? Complex logic can turn into spaghetti nodes fast.
+
+**🐍 pyRevit** — Python meets Revit. Write custom tools that live right in your ribbon. Speed is excellent since it runs native C# under the hood. Trade-off: requires Python programming skills.
+
+**⚡ Revit API (C#)** — The fastest, most powerful option with direct access to everything Revit can do. Trade-off: steep learning curve, you often need to build your own UI, and plugins typically serve one specialized purpose.
+
+**🤖 AI Connector (e.g. Claude + MCP)** — The newest player, and the one that shines where the others struggle. 
+- Natural language commands with the flexibility to chain tools and automate multi-step tasks. 
+- The real differentiator isn't just *getting* data out of Revit: it's what happens next. An AI connector keeps going. It can summarize findings, flag anomalies, generate a formatted report, produce a CSV, draft an email to your team, or answer follow-up questions, all in the same conversation. 
+- Trade-off: slower than native commands. Best for complex one-off operations, cross-discipline analysis, exploration, and anywhere the presentation of results matters as much as the results themselves.
+---
+
 ## The Two Moving Parts
 
 The connector is made of exactly two pieces that talk to each other over the local network.
