@@ -101,6 +101,11 @@ namespace RevitClaudePlugIn.ToolHandler
 
         public int ToolCount => toolRegistry?.Tools.Count ?? 0;
 
+        public void EnsureInitialized(UIApplication uiapp)
+        {
+            toolRegistry ??= ToolRegistry.LoadForCurrentRevit(uiapp);
+        }
+
         public string GetName() => "Claude Revit Bridge";
     }
 }

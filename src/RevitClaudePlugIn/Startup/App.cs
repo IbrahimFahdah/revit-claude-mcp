@@ -3,6 +3,7 @@ using RevitClaudePlugIn.Commands;
 using RevitClaudePlugIn.Common;
 using RevitClaudePlugIn.ToolHandler;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Media.Imaging;
@@ -90,17 +91,33 @@ namespace RevitClaudePlugIn.Startup
 
             app.DockableFrameVisibilityChanged += async (sender, args) =>
             {
-                if (args.PaneId == new DockablePaneId(Constants.PanelGuid))
+                if (args.PaneId != new DockablePaneId(Constants.PanelGuid)) return;
+                try
                 {
+                    _panel.IsPanelVisible = args.DockableFrameShown;
                     if (args.DockableFrameShown)
                         await _panel.AttachClaude();
                     else
                         _panel.ReleaseClaude();
                 }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Claude panel error: " + ex.Message);
+                }
             };
+
+            // Eagerly initialize tool registry on first idle so Status shows correct tool count
+            app.Idling += OnFirstIdle;
 
 
             return Result.Succeeded;
+        }
+
+        private void OnFirstIdle(object sender, Autodesk.Revit.UI.Events.IdlingEventArgs e)
+        {
+            var uiapp = (UIApplication)sender;
+            ActiveHandler.EnsureInitialized(uiapp);
+            uiapp.Idling -= OnFirstIdle;
         }
 
         public Result OnShutdown(UIControlledApplication app)
