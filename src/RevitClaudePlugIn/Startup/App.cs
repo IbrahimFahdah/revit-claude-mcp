@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.UI;
 using RevitClaudePlugIn.Commands;
+using RevitClaudePlugIn.Common;
 using RevitClaudePlugIn.ToolHandler;
 using System;
 using System.IO;
@@ -11,8 +12,6 @@ namespace RevitClaudePlugIn.Startup
     public class App : IExternalApplication
     {
         AppStartup _appStartup;
-        private static readonly Guid PanelGuid =
-             new Guid("8A0C52B3-4C67-4F9B-B8C2-7C7E2E8F3123");
         private ClaudePanel _panel;
 
         /// <summary>The running UiHandler, used by ReloadToolsCommand.</summary>
@@ -38,7 +37,7 @@ namespace RevitClaudePlugIn.Startup
             btn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ClaudeBtn16.png")));
             ribbon.AddItem(btn);
 
-            var toolListbtn = new PushButtonData("toolListbtn", "Tools", asmPath, "RevitClaudePlugIn.Commands.TooListCommand");
+            var toolListbtn = new PushButtonData("toolListbtn", "Tools", asmPath, "RevitClaudePlugIn.Commands.ToolListCommand");
             toolListbtn.ToolTip = "Revit Claude Connector Tool List";
             toolListbtn.LongDescription = "Show all tools that are currently available with the connector.";
             toolListbtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ToolsBtn32.png")));
@@ -55,11 +54,11 @@ namespace RevitClaudePlugIn.Startup
             // Register Dockable Panel
             _panel = new ClaudePanel();
             var provider = new ClaudePanelProvider(_panel);
-            app.RegisterDockablePane(new DockablePaneId(PanelGuid), "Claude AI", provider);
+            app.RegisterDockablePane(new DockablePaneId(Constants.PanelGuid), "Claude AI", provider);
 
             app.DockableFrameVisibilityChanged += (sender, args) =>
             {
-                if (args.PaneId == new DockablePaneId(PanelGuid))
+                if (args.PaneId == new DockablePaneId(Constants.PanelGuid))
                 {
                     if (args.DockableFrameShown)
                         _panel.AttachClaude();

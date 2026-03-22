@@ -1,4 +1,4 @@
-﻿using Autodesk.Revit.Attributes;
+using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using RevitClaudePlugIn.ToolHandler;
@@ -6,7 +6,7 @@ using RevitClaudePlugIn.ToolHandler;
 namespace RevitClaudePlugIn.Commands
 {
     [Transaction(TransactionMode.Manual)]
-    public class TooListCommand : IExternalCommand
+    public class ToolListCommand : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData,
                               ref string message, ElementSet elements)

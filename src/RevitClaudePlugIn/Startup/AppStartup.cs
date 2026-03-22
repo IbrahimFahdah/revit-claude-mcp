@@ -1,6 +1,4 @@
 ﻿using Autodesk.Revit.UI;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
 using RevitClaudePlugIn.ToolHandler;
 using System;
 using System.Diagnostics;
@@ -56,13 +54,7 @@ namespace RevitClaudePlugIn.Startup
                 _listener.Prefixes.Add(listenerUrl);
 
                 _listener.Start();
-                TaskDialog("RevitClaudeConnector", "RevitClaudeConnector started successfully");
-
-                // Initialize Application Insights with your instrumentation key
-                var config = new TelemetryConfiguration("a2067467-fe1f-486e-9954-b086a713ae35");
-                var telemetryClient = new TelemetryClient(config);
-                telemetryClient.TrackTrace($"App session started by {Environment.UserName}");
-                telemetryClient.Flush();
+                TaskDialog("Claude Connector", "Claude Connector started successfully");
             }
             catch (HttpListenerException ex)
             {
@@ -77,7 +69,7 @@ namespace RevitClaudePlugIn.Startup
             catch (Exception ex)
             {
                 TaskDialog(
-                    "RevitClaudeConnector ERROR", "Something went wrong" + "Details:\n" + ex.Message);
+                    "Claude Connector ERROR", "Something went wrong" + "Details:\n" + ex.Message);
                 return false;
             }
 

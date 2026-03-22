@@ -4,6 +4,7 @@ using RevitClaudePlugIn.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -146,8 +147,9 @@ namespace RevitClaudePlugIn.ToolHandler
                 {
                     manifest = JObject.Parse(File.ReadAllText(manifestPath));
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Debug.WriteLine($"[ToolRegistry] Failed to parse manifest '{manifestPath}': {ex.Message}");
                     continue;
                 }
 
@@ -191,9 +193,9 @@ namespace RevitClaudePlugIn.ToolHandler
                                     InputSchema = input
                                 };
                             }
-                            catch
+                            catch (Exception ex)
                             {
-                                // leave mcp null on parse error
+                                Debug.WriteLine($"[ToolRegistry] Failed to parse schema '{schemaPath}': {ex.Message}");
                             }
                         }
                     }
