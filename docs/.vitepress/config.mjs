@@ -32,7 +32,8 @@ export default defineConfig({
         items: [
           { text: 'The Tool Registry', link: '/guide/tool-registry' },
           { text: 'Built-In Tools', link: '/guide/built-in-tools' },
-          { text: 'Custom Tools', link: '/guide/custom-tools' }
+          { text: 'Custom Tools', link: '/guide/custom-tools' },
+          { text: 'Hot Reload', link: '/guide/hot-reload' }
         ]
       },
       {

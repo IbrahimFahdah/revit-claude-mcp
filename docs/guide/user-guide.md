@@ -20,6 +20,35 @@ Skills let you automate repetitive workflows by chaining tools together and cont
 
 A skill is a `.skill` file (a renamed ZIP archive — you can inspect its contents by adding `.zip` to the filename and extracting it). A sample skill is included in the [`claude-skill-sample/`](https://github.com/IbrahimFahdah/revit-claude-mcp/tree/master/claude-skill-sample) folder of this repository as a starting point.
 
+### Included Skill: `bim-qaqc-auditor`
+
+The `bim-qaqc-auditor.skill` is a ready-to-use BIM quality assurance skill that automatically validates your Revit model against common BIM standards and generates a detailed CSV report. It checks:
+
+- **Level naming conventions** — ensures levels follow the pattern `[Letter][Number]_[Text]` (e.g. `F1_GROUND FLOOR`, `B2_BASEMENT 2 FFL`)
+- **Room/Space parameters** — verifies every room has a valid `SpaceUsageCode` and `description` matching the bundled usage codes reference spreadsheet
+
+#### How to Load a Skill in Claude
+
+1. Open **Claude Desktop** and go to **Settings → Claude AI Skills**
+2. Click **Add Skill** and browse to the `bim-qaqc-auditor.skill` file
+3. The skill named `bim-qaqc-auditor` will appear in your skills list and become available in your conversations
+
+#### Prompt Examples to Trigger the Skill
+
+Once the skill is loaded, Claude will automatically apply it when you ask something like:
+
+- `"Run the BIM QA/QC auditor on the current model"`
+- `"Use the bim-qaqc-auditor skill to check my Revit model"`
+- `"Audit this model for level naming and space parameter issues"`
+- `"Run QA/QC checks and save a report to my Desktop"`
+
+Claude will follow the skill's workflow — querying levels and rooms via the connector tools, validating against the bundled usage codes spreadsheet, and producing a `QAQC.csv` report at a location you specify.
+
+#### Want to Build Your Own Skills?
+
+You can create custom skills tailored to your own workflows and validation rules. To learn more, see the official Claude documentation on building skills:
+[https://code.claude.com/docs/en/skills](https://code.claude.com/docs/en/skills)
+
 ## Performance
 Working with AI Assistance in Revit is a different experience than using native Revit tools.
 Running commands directly in Revit will almost always be faster than asking an AI to do the same thing. The AI connector shines for certain use cases as mentioned in the "AI Assistance in Revit" section of the [What Is This?](

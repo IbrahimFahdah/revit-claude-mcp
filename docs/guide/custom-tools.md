@@ -23,7 +23,7 @@ C:\Users\YourName\AppData\Local\RevitClaudeConnector\2025\Tools\Packages\
 **Key rules:**
 
 - Each subdirectory of `Packages\` is treated as one package.
-- There is no registration step — drop the folder in and restart Revit.
+- There is no registration step — drop the folder in and [hot reload](/guide/hot-reload).
 - If a custom tool has the same `name` as a built-in tool, **the custom tool takes precedence**.
 - Tools are isolated with a dedicated `AssemblyLoadContext`, so your DLL's dependencies cannot conflict with the plugin's.
 
@@ -95,7 +95,7 @@ namespace MyCompanyTools
             get_active_view_name.schema.json
 ```
 
-**6. Restart Revit.** The tool appears immediately in `tools/list` and Claude can call it.
+**6. Hot reload** — no Revit or Claude restart needed. See [Hot Reload](/guide/hot-reload).
 
 ---
 
