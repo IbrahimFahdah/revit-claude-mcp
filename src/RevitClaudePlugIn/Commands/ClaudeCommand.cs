@@ -14,7 +14,10 @@ namespace RevitClaudePlugIn.Commands
             var dpId = new DockablePaneId(Constants.PanelGuid);
             var uiapp = commandData.Application;
             var dp = uiapp.GetDockablePane(dpId);
-            dp.Show();
+            if (dp.IsShown())
+                dp.Hide();
+            else
+                dp.Show();
 
             return Result.Succeeded;
         }

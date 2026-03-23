@@ -52,19 +52,22 @@ namespace RevitClaudePlugIn.Startup
             toolListbtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ToolsBtn16.png")));
             ribbon.AddItem(toolListbtn);
 
+            // Manage panel
+            var manageRibbon = app.CreateRibbonPanel("Claude Connector", "Manage");
+
             var restartBtn = new PushButtonData("restartBtn", "Restart Claude", asmPath, "RevitClaudePlugIn.Commands.RestartClaudeCommand");
             restartBtn.ToolTip = "Hard-restart the Claude desktop application.";
             restartBtn.LongDescription = "Kills Claude if running, relaunches it, and re-attaches it to the panel if the panel is visible.";
             restartBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "RunClaudeBtn32.png")));
             restartBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "RunClaudeBtn16.png")));
-            ribbon.AddItem(restartBtn);
+            manageRibbon.AddItem(restartBtn);
 
             var reloadBtn = new PushButtonData("reloadBtn", "Reload Tools", asmPath, "RevitClaudePlugIn.Commands.ReloadToolsCommand");
             reloadBtn.ToolTip = "Reload all tool packages from disk without restarting Revit.";
             reloadBtn.LongDescription = "Use this to refresh loaded tools after adding, updating, or replacing tool packages.";
             reloadBtn.LargeImage = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ReloadBtn32.png")));
             reloadBtn.Image = new BitmapImage(new Uri(Path.Combine(iconsFolder, "ReloadBtn16.png")));
-            ribbon.AddItem(reloadBtn);
+            manageRibbon.AddItem(reloadBtn);
 
             // Help panel
             var helpRibbon = app.CreateRibbonPanel("Claude Connector", "Help");
