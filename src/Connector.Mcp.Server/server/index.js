@@ -86,7 +86,7 @@ rl.on("line", async line => {
                 jsonrpc: "2.0",
                 id,
                 result: {
-                    protocolVersion: params.protocolVersion || "2025-06-18",
+                    protocolVersion: "2025-06-18",
                     capabilities: { tools: {} },
                     serverInfo: { name: "revit-bridge-js", version: "1.0.0" },
                     sessionId: randomUUID()
@@ -102,7 +102,7 @@ rl.on("line", async line => {
             const { body, status } = await httpGet("/tools");
             if (status >= 400) throw new Error(`GET /tools HTTP ${status}`);
             let tools = [];
-            try { tools = JSON.parse(body); } catch { /* keep empty */ }
+            try { tools = JSON.parse(body); } catch (e) { log("failed to parse /tools response:", e?.message); }
             write({ jsonrpc: "2.0", id, result: { tools } });
             return;
         }
@@ -114,7 +114,7 @@ rl.on("line", async line => {
             const name = params?.name ?? "";
             const args = params?.arguments ?? {};
             const { body, status } = await httpPost("/call", { name, arguments: args });
-            if (status >= 400) throw new Error(`POST /call HTTP ${status}: ${body}`);
+            if (status >= 400) { log("POST /call error body:", body); throw new Error(`POST /call HTTP ${status}`); }
             write({
                 jsonrpc: "2.0",
                 id,
@@ -122,6 +122,9 @@ rl.on("line", async line => {
             });
             return;
         }
+
+        // notifications/initialized — client sends after initialize, no response needed
+        if (method === "notifications/initialized") { return; }
 
         // optional requests
         if (method === "setLogLevel") {
