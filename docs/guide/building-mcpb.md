@@ -54,7 +54,7 @@ After running `mcpb pack`, one new file is created in the same directory:
   "description": "Let Claude access your Revit models.",
   "long_description": "This extension allows Claude to interact with Revit models and call your Revit C# tools.",
   "author": {
-    "name": "IFADAH"
+    "name": "Dr.Ibrahim Fahdah"
   },
   "icon": "icon.png",
   "server": {
@@ -63,15 +63,33 @@ After running `mcpb pack`, one new file is created in the same directory:
     "mcp_config": {
       "command": "node",
       "args": [
-        "${__dirname}/server/index.js"
+        "${__dirname}/server/index.js",
+        "--base=${user_config.bridge_url}",
+        "--timeout=${user_config.timeout_ms}"
       ]
     }
   },
-  "keywords": ["api", "automation", "productivity"],
+  "user_config": {
+    "bridge_url": {
+      "type": "string",
+      "title": "Revit Bridge URL",
+      "description": "Base URL of the Revit HTTP bridge (change if port 5578 is already in use).",
+      "default": "http://127.0.0.1:5578",
+      "required": false
+    },
+    "timeout_ms": {
+      "type": "number",
+      "title": "Request Timeout (ms)",
+      "description": "How long to wait for a response from Revit before timing out.",
+      "default": 60000,
+      "required": false
+    }
+  },
+  "keywords": ["revit", "bim", "autodesk", "architecture"],
   "license": "MIT",
   "compatibility": {
     "claude_desktop": ">=0.10.0",
-    "platforms": ["darwin", "win32", "linux"],
+    "platforms": ["win32"],
     "runtimes": {
       "node": ">=16.0.0"
     }

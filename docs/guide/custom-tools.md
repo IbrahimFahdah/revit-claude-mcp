@@ -99,6 +99,3 @@ namespace MyCompanyTools
 
 ---
 
-## Next Step
-
-→ *(Coming soon)* Accessing Revit data from your tool — parameters, elements, transactions

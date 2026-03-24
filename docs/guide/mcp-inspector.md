@@ -1,6 +1,6 @@
 # Testing with MCP Inspector
 
-Before packaging your server into a `.mcpb` and installing it in Claude Desktop, you should test it in isolation. **MCP Inspector** is an official tool from Anthropic that gives you a visual interface to send MCP messages to your server and see the raw responses — exactly what Claude sees when it talks to the server.
+Before packaging your server into a `.mcpb` and installing it in Claude Desktop, you should test it in isolation. **[MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector)** is an official tool from Anthropic that gives you a visual interface to send MCP messages to your server and see the raw responses — exactly what Claude sees when it talks to the server.
 
 This page shows you how to set it up and use it to verify that your Revit connector is working correctly.
 

@@ -19,5 +19,5 @@ features:
   - title: Model Context Protocol
     details: Built on Anthropic's open MCP standard. The same protocol used by hundreds of other Claude integrations.
   - title: Extensible Tool System
-    details: Ships with 46 ready-made Revit tools. Add your own C# tools without touching the core plugin.
+    details: Ships with ~50 ready-made Revit tools. Add your own C# tools without touching the core plugin.
 ---
