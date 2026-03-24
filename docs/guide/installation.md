@@ -57,12 +57,7 @@ revit-claude-connector-vX.X.X.zip
 3. Select `server/Revit.Claude.Connector.Mcp.Server.mcpb` and confirm the installation.
 4. Restart Claude Desktop when prompted.
 
----
-
-## Step 3 — Connect
-
-1. In Revit, open a project and click the **Claude** button in the ribbon to start the bridge.
-2. In Claude Desktop, you can now ask Claude to query and manipulate your Revit model.
+In Claude Desktop, you can now ask Claude to query and manipulate your Revit model.
 
 ---
 

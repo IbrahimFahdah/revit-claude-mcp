@@ -58,13 +58,39 @@ Your Revit Model
 
 The two pieces are deliberately separate so that the MCP Server stays simple and stateless, while all the Revit-specific logic lives in C# where the Revit API is available.
 
----
+### How a Request Flows
 
-## What You Will Learn in This Guide
+When you type a message in Claude Desktop, here is exactly what happens:
 
-The next sections take you through every layer of the system:
+1. **Claude Desktop → MCP Server** — Claude decides which tool to call and sends a JSON-RPC request to the MCP Server over stdio (standard input/output of the server process).
+2. **MCP Server → Revit Add-in** — The MCP Server forwards the tool call as an HTTP POST to `127.0.0.1:5578`, the local endpoint the Revit add-in is listening on.
+3. **Revit Add-in → Revit API** — The add-in receives the request, runs the corresponding C# logic against the live Revit model, and collects the results.
+4. **Revit Add-in → MCP Server** — The add-in returns the results as a JSON HTTP response.
+5. **MCP Server → Claude Desktop** — The MCP Server wraps the response in a JSON-RPC reply and sends it back to Claude over stdio.
+6. **Claude Desktop → You** — Claude reads the results and composes a natural-language answer in the chat window.
 
-1. **How the MCP Server works** — what each line of `index.js` does and why
-2. **Building the `.mcpb` extension** — packaging the server so Claude Desktop can install it in one click
-3. *(Coming soon)* How the Revit Bridge works
-4. *(Coming soon)* Writing your own Revit tools
+```mermaid
+sequenceDiagram
+    actor You
+    participant CD as Claude Desktop
+    participant AN as Anthropic API
+    participant MCP as MCP Server<br/>(Node.js)
+    participant RA as Revit Add-in<br/>(C#)
+    participant RV as Revit Model
+
+    You->>CD: Type a message
+    CD->>AN: Send conversation + tool definitions
+    AN-->>CD: Call tool (JSON-RPC)
+    CD->>MCP: Tool call via stdio
+    MCP->>RA: HTTP POST 127.0.0.1:5578
+    RA->>RV: Revit API call
+    RV-->>RA: Model data
+    RA-->>MCP: JSON response
+    MCP-->>CD: Tool result via stdio
+    CD->>AN: Send tool result
+    AN-->>CD: Natural-language reply
+    CD-->>You: Answer in chat
+```
+
+The communication between the MCP Server and the Revit add-in is entirely local (`127.0.0.1`). However, your messages and the tool results are sent to Anthropic's servers by Claude Desktop in order to generate a response — the same as any normal Claude conversation.
+

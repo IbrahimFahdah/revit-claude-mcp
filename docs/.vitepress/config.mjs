@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   title: 'Claude–Revit AI Connector',
   description: 'Open source MCP bridge between Claude AI and Autodesk Revit',
   base: '/revit-claude-mcp/',
@@ -47,4 +48,4 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/IbrahimFahdah/revit-claude-mcp' }
     ]
   }
-})
+}))
