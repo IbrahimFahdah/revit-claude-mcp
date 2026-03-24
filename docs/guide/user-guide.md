@@ -1,9 +1,11 @@
 # User Guide
 
+Once both the plugin and the MCP server are installed, you should be able to chat with Revit from Claude. Below are some tips to enhance your working experience with the connector.
+
 ## Claude Panel
 Toggling the Claude button shows/hides the Claude Panel. When the panel is shown, the Claude UI will be snapped inside the panel area. Note that Claude Desktop should already be manually launched before using the panel. 
 
-If you prefer to keep Claude Desktop in its own separate window, you can close the panel and work with Claude normally.
+**Note:**If you prefer to keep Claude Desktop in its own separate window, you can close the panel and work with Claude normally.
 
 ![Claude Panel](/RevitClaudeUI1.png)
 

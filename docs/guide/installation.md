@@ -46,7 +46,7 @@ revit-claude-connector-vX.X.X.zip
        └── ...
    ```
 
-3. Launch (or restart) Revit 2025. A **Claude** panel will appear in the ribbon.
+3. Launch (or restart) Revit 2025. A **Claude Connector** tab will appear in the ribbon.
 
 ---
 
@@ -58,6 +58,10 @@ revit-claude-connector-vX.X.X.zip
 4. Restart Claude Desktop when prompted.
 
 In Claude Desktop, you can now ask Claude to query and manipulate your Revit model.
+
+**NOTE:** Once both the plugin and the MCP server are installed, open Revit and click the **Status** button in the **Claude Connector** ribbon tab. The status should read `Running`.
+
+![Tools](/ConnectorStatus.png)
 
 ---
 
