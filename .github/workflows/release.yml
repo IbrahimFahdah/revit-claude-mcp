@@ -33,7 +33,9 @@ jobs:
           Copy-Item src/BuiltInTools/bin/Release/net8.0-windows/BuiltInTools.dll dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners/
           Copy-Item src/BuiltInTools/Schemas dist/RevitClaudeConnector/Tools/Packages/BuiltIn/Schemas -Recurse -Force
           Copy-Item src/BuiltInTools/manifest.json dist/RevitClaudeConnector/Tools/Packages/BuiltIn/
-          Copy-Item src/RevitClaudePlugIn/Resources/plugin_settings.json dist/RevitClaudeConnector/
+          $settings = Get-Content src/RevitClaudePlugIn/Resources/plugin_settings.json | ConvertFrom-Json
+          $settings.version = "${{ github.ref_name }}".TrimStart('v')
+          $settings | ConvertTo-Json | Set-Content dist/RevitClaudeConnector/plugin_settings.json
           Copy-Item src/RevitClaudePlugIn/Resources/RevitClaudeConnector.addin dist/
           New-Item -ItemType Directory -Path dist/server -Force | Out-Null
           Copy-Item src/Connector.Mcp.Server/Revit.Claude.Connector.Mcp.Server.mcpb dist/server/
