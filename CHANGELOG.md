@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2026-03-30
+
+### Fixed
+- Claude panel now fills the full dockable pane area on all display scale settings (125 %, 150 %, etc.). Previously the embedded Claude window was sized using WPF device-independent pixels instead of physical pixels, leaving a black gap along the right and bottom edges on high-DPI machines. `MoveWindow` calls in both the initial embed and the resize handler now convert DIPs to physical pixels via the panel's `HwndSource.CompositionTarget.TransformToDevice` matrix.
+
+[1.0.5]: https://github.com/IbrahimFahdah/revit-claude-mcp/releases/tag/v1.0.5
+
 ## [1.0.4] - 2026-03-24
 
 ### Fixed

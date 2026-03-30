@@ -95,10 +95,22 @@ namespace RevitClaudePlugIn.Commands
         {
             if (_isEmbedded && _claudeHwnd != IntPtr.Zero)
             {
-                MoveWindow(_claudeHwnd, 0, 0,
-                    (int)ClaudeHost.ActualWidth,
-                    (int)ClaudeHost.ActualHeight, true);
+                var (w, h) = ToPhysicalPixels(ClaudeHost.ActualWidth, ClaudeHost.ActualHeight);
+                MoveWindow(_claudeHwnd, 0, 0, w, h, true);
             }
+        }
+
+        /// <summary>
+        /// Converts WPF device-independent pixels to physical (screen) pixels using the
+        /// actual DPI of the panel's HwndSource. Required for correct MoveWindow calls.
+        /// </summary>
+        private (int width, int height) ToPhysicalPixels(double dipWidth, double dipHeight)
+        {
+            var source = PresentationSource.FromVisual(ClaudeHost);
+            if (source?.CompositionTarget == null)
+                return ((int)dipWidth, (int)dipHeight);
+            var m = source.CompositionTarget.TransformToDevice;
+            return ((int)(dipWidth * m.M11), (int)(dipHeight * m.M22));
         }
 
         /// <summary>
@@ -230,10 +242,9 @@ namespace RevitClaudePlugIn.Commands
 
             SetParent(_claudeHwnd, source.Handle);
 
-            // Fit immediately
-            MoveWindow(_claudeHwnd, 0, 0,
-                (int)ClaudeHost.ActualWidth,
-                (int)ClaudeHost.ActualHeight, true);
+            // Fit immediately — use physical pixels, not WPF DIPs
+            var (w, h) = ToPhysicalPixels(ClaudeHost.ActualWidth, ClaudeHost.ActualHeight);
+            MoveWindow(_claudeHwnd, 0, 0, w, h, true);
 
             _isEmbedded = true;
         }
