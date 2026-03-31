@@ -66,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2026-03-21
 
-Initial open-source release of the Claude–Revit AI Connector using the Model Context Protocol (MCP).
+Initial open-source release of the Revit–Claude AI Connector using the Model Context Protocol (MCP).
 
 ### Added
 - **MCP Server** — Node.js MCP server (compiled `.mcpb` bundle) that exposes Revit as tools to Claude

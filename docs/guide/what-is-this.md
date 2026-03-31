@@ -1,4 +1,4 @@
-# What Is the Claude–Revit AI Connector?
+# What Is the Revit–Claude AI Connector?
 
 This project is an open source bridge that lets **Claude AI** talk directly to **Autodesk Revit**.
 

@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "Claude–Revit AI Connector"
+  name: "Revit–Claude AI Connector"
   text: "MCP bridge between Claude and Autodesk Revit"
   tagline: Open source. Built on the Model Context Protocol.
   actions:
