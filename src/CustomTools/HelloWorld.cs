@@ -1,5 +1,5 @@
-﻿using Autodesk.Revit.UI;
-using System.Text.Json.Nodes;
+using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
 
 namespace CustomTools
 {
@@ -7,15 +7,13 @@ namespace CustomTools
     {
         public string Execute(UIApplication uiapp, UIDocument uidoc, string requestJson)
         {
-            var result = new JsonObject
+            var result = new JObject
             {
                 ["ok"] = true,
                 ["Message"] = "Hello World!",
             };
 
-            return result.ToJsonString();
+            return result.ToString();
         }
     }
 }
-
-

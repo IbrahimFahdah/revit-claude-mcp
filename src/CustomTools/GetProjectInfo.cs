@@ -1,6 +1,6 @@
-﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using System.Text.Json.Nodes;
+using Newtonsoft.Json.Linq;
 
 namespace CustomTools
 {
@@ -14,16 +14,14 @@ namespace CustomTools
                 .WhereElementIsNotElementType()
                 .ToElementIds().Count;
 
-            var result = new JsonObject
+            var result = new JObject
             {
                 ["ok"] = true,
                 ["title"] = doc.Title,
                 ["elementCount"] = elementCount
             };
 
-            return result.ToJsonString();
+            return result.ToString();
         }
     }
 }
-
-

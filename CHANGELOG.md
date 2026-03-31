@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-03-31
+
+### Added
+- **Revit 2024 and below support** — plugin now ships two variants in the release ZIP:
+  - `Revit2025Plus/` — targets .NET 8 (Revit 2025 and above)
+  - `Revit2024/` — targets .NET Framework 4.8 (Revit 2024 and below)
+- Both variants are built from the same codebase using multi-targeting
+
+### Changed
+- `ToolALC` uses `AssemblyLoadContext` on .NET 8 and falls back to `Assembly.LoadFrom` with an `AppDomain.AssemblyResolve` handler on .NET Framework
+- All custom tool examples ported from `System.Text.Json.Nodes` to `Newtonsoft.Json.Linq` for cross-framework compatibility
+- Removed unused `System.ClientModel` dependency (was pulling `System.Text.Json.dll` into the output unnecessarily)
+- Release workflow updated to build and stage both framework variants
+
+### Fixed
+- `string.Split(string)` overload unavailable on .NET Framework — replaced with `Split(string[], StringSplitOptions)` in MSIX registry lookup
+
+### Known Limitations
+- Tool hot-reload is not supported on Revit 2024 and below. Clicking the Reload button will show an informational message; tool DLL changes require a Revit restart on .NET Framework.
+
+[1.0.6]: https://github.com/IbrahimFahdah/revit-claude-mcp/releases/tag/v1.0.6
+
 ## [1.0.5] - 2026-03-30
 
 ### Fixed
