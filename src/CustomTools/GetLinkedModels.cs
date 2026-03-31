@@ -1,6 +1,6 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using System.Text.Json.Nodes;
+using Newtonsoft.Json.Linq;
 
 namespace CustomTools
 {
@@ -15,7 +15,7 @@ namespace CustomTools
                 .Cast<RevitLinkInstance>()
                 .ToList();
 
-            var linkArray = new JsonArray();
+            var linkArray = new JArray();
 
             foreach (var link in links)
             {
@@ -26,7 +26,7 @@ namespace CustomTools
                     ? ModelPathUtils.ConvertModelPathToUserVisiblePath(extRef.GetAbsolutePath())
                     : "";
 
-                linkArray.Add(new JsonObject
+                linkArray.Add(new JObject
                 {
                     ["id"] = link.Id.Value,
                     ["name"] = link.Name,
@@ -36,12 +36,12 @@ namespace CustomTools
                 });
             }
 
-            return new JsonObject
+            return new JObject
             {
                 ["ok"] = true,
                 ["count"] = links.Count,
                 ["links"] = linkArray
-            }.ToJsonString();
+            }.ToString();
         }
     }
 }

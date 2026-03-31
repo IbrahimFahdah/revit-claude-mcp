@@ -1,7 +1,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
-using System.Text.Json.Nodes;
+using Newtonsoft.Json.Linq;
 
 namespace CustomTools
 {
@@ -14,25 +14,25 @@ namespace CustomTools
             long roomId;
             try
             {
-                var input = JsonNode.Parse(requestJson);
-                roomId = input?["roomId"]?.GetValue<long>()
+                var input = JToken.Parse(requestJson);
+                roomId = input["roomId"]?.Value<long>()
                     ?? throw new Exception("roomId is required");
             }
             catch (Exception ex)
             {
-                return new JsonObject { ["ok"] = false, ["error"] = ex.Message }.ToJsonString();
+                return new JObject { ["ok"] = false, ["error"] = ex.Message }.ToString();
             }
 
             var room = doc.GetElement(new ElementId(roomId)) as Room;
             if (room == null)
-                return new JsonObject { ["ok"] = false, ["error"] = $"Element {roomId} is not a Room" }.ToJsonString();
+                return new JObject { ["ok"] = false, ["error"] = $"Element {roomId} is not a Room" }.ToString();
 
             if (room.Area == 0)
-                return new JsonObject { ["ok"] = false, ["error"] = "Room has no area (unplaced or unbounded)" }.ToJsonString();
+                return new JObject { ["ok"] = false, ["error"] = "Room has no area (unplaced or unbounded)" }.ToString();
 
             var bb = room.get_BoundingBox(null);
             if (bb == null)
-                return new JsonObject { ["ok"] = false, ["error"] = "Room has no bounding box" }.ToJsonString();
+                return new JObject { ["ok"] = false, ["error"] = "Room has no bounding box" }.ToString();
 
             // Pre-filter by bounding box, then confirm with IsPointInRoom
             var bbFilter = new BoundingBoxIntersectsFilter(new Outline(bb.Min, bb.Max));
@@ -42,7 +42,7 @@ namespace CustomTools
                 .WherePasses(bbFilter)
                 .ToList();
 
-            var elements = new JsonArray();
+            var elements = new JArray();
 
             foreach (var elem in candidates)
             {
@@ -57,7 +57,7 @@ namespace CustomTools
 
                 if (point != null && room.IsPointInRoom(point))
                 {
-                    elements.Add(new JsonObject
+                    elements.Add(new JObject
                     {
                         ["id"] = elem.Id.Value,
                         ["name"] = elem.Name,
@@ -66,7 +66,7 @@ namespace CustomTools
                 }
             }
 
-            return new JsonObject
+            return new JObject
             {
                 ["ok"] = true,
                 ["roomId"] = roomId,
@@ -74,7 +74,7 @@ namespace CustomTools
                 ["roomNumber"] = room.Number,
                 ["count"] = elements.Count,
                 ["elements"] = elements
-            }.ToJsonString();
+            }.ToString();
         }
     }
 }

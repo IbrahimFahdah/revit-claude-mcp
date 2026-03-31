@@ -20,30 +20,54 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Build RevitClaudePlugIn
-        run: dotnet publish src/RevitClaudePlugIn/RevitClaudePlugIn.csproj -c Release -o dist/RevitClaudeConnector --no-self-contained
+      # .NET Framework 4.8 is pre-installed on windows-latest — no extra setup needed.
 
-      - name: Build BuiltInTools
+      - name: Build RevitClaudePlugIn (Revit2025Plus — net8.0-windows)
+        run: dotnet publish src/RevitClaudePlugIn/RevitClaudePlugIn.csproj -c Release -f net8.0-windows -o dist/Revit2025Plus/RevitClaudeConnector --no-self-contained
+
+      - name: Build RevitClaudePlugIn (Revit2024 — net48)
+        run: dotnet publish src/RevitClaudePlugIn/RevitClaudePlugIn.csproj -c Release -f net48 -o dist/Revit2024/RevitClaudeConnector --no-self-contained
+
+      - name: Build BuiltInTools (both targets)
         run: dotnet build src/BuiltInTools/BuiltInTools.csproj -c Release
 
       - name: Stage artifacts
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Path dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners -Force | Out-Null
-          Copy-Item src/BuiltInTools/bin/Release/net8.0-windows/BuiltInTools.dll dist/RevitClaudeConnector/Tools/Packages/BuiltIn/runners/
-          Copy-Item src/BuiltInTools/Schemas dist/RevitClaudeConnector/Tools/Packages/BuiltIn/Schemas -Recurse -Force
-          Copy-Item src/BuiltInTools/manifest.json dist/RevitClaudeConnector/Tools/Packages/BuiltIn/
-          $settings = Get-Content src/RevitClaudePlugIn/Resources/plugin_settings.json | ConvertFrom-Json
-          $settings.version = "${{ github.ref_name }}".TrimStart('v')
-          $settings | ConvertTo-Json | Set-Content dist/RevitClaudeConnector/plugin_settings.json
-          Copy-Item src/RevitClaudePlugIn/Resources/RevitClaudeConnector.addin dist/
-          New-Item -ItemType Directory -Path dist/server -Force | Out-Null
-          Copy-Item src/Connector.Mcp.Server/Revit.Claude.Connector.Mcp.Server.mcpb dist/server/
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          $variants = @(
+            @{ Name = "Revit2025Plus"; Framework = "net8.0-windows" },
+            @{ Name = "Revit2024";     Framework = "net48"           }
+          )
+
+          foreach ($v in $variants) {
+            $dest = "dist/$($v.Name)/RevitClaudeConnector/Tools/Packages/BuiltIn"
+            New-Item -ItemType Directory -Path "$dest/runners" -Force | Out-Null
+
+            Copy-Item "src/BuiltInTools/bin/Release/$($v.Framework)/BuiltInTools.dll" "$dest/runners/"
+            Copy-Item src/BuiltInTools/Schemas "$dest/Schemas" -Recurse -Force
+            Copy-Item src/BuiltInTools/manifest.json "$dest/"
+
+            # Stamp version into plugin_settings.json
+            $settings = Get-Content src/RevitClaudePlugIn/Resources/plugin_settings.json | ConvertFrom-Json
+            $settings.version = $version
+            $settings | ConvertTo-Json | Set-Content "dist/$($v.Name)/RevitClaudeConnector/plugin_settings.json"
+
+            # Copy .addin and server bundle
+            Copy-Item src/RevitClaudePlugIn/Resources/RevitClaudeConnector.addin "dist/$($v.Name)/"
+            New-Item -ItemType Directory -Path "dist/$($v.Name)/server" -Force | Out-Null
+            Copy-Item src/Connector.Mcp.Server/Revit.Claude.Connector.Mcp.Server.mcpb "dist/$($v.Name)/server/"
+          }
+
           Set-Content dist/INSTALL.md @"
           # Revit Claude Connector ${{ github.ref_name }}
 
           For full installation instructions, visit:
           https://ibrahimfahdah.github.io/revit-claude-mcp/guide/installation.html
+
+          ## Which folder to use?
+          - **Revit2025Plus** — for Revit 2025 and above (.NET 8)
+          - **Revit2024**     — for Revit 2024 and below (.NET Framework 4.8)
           "@
 
       - name: Create release archive

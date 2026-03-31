@@ -161,7 +161,7 @@ namespace RevitClaudePlugIn.Commands
 
                 // Derive PackageFamilyName from PackageFullName
                 // "Claude_1.1.7714.0_x64__pzs8sxrjxfjjc" → "Claude_pzs8sxrjxfjjc"
-                var parts = subKeyName.Split("__");
+                var parts = subKeyName.Split(new string[] { "__" }, StringSplitOptions.None);
                 if (parts.Length != 2) continue;
                 var familyName = $"{parts[0].Split('_')[0]}_{parts[1]}";
 
