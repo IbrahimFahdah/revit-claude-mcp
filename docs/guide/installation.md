@@ -38,6 +38,10 @@ revit-claude-connector-vX.X.X.zip
 
 ## Step 1 — Install the Revit Plugin
 
+> **Important — Unblock the ZIP before extracting**
+>
+> Windows marks files downloaded from the internet as blocked, which will cause Revit to throw an exception when loading the plugin. Before extracting, right-click the ZIP file → **Properties** → check **Unblock** at the bottom → click **OK**.
+
 1. Open File Explorer and navigate to your Revit add-ins folder. Replace `20XX` with your Revit version:
    ```
    %APPDATA%\Autodesk\Revit\Addins\20XX\
