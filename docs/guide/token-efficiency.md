@@ -36,6 +36,11 @@ Step 3: "Export to CSV"
 
 ❌ "Get all furniture in every room with all their parameters and export to CSV organized by level"
 
+### Create a skill for repetitive multi-step workflows
+If you run the same sequence of Revit queries regularly (e.g. "get all elements in a room → get their parameters → export to CSV"), consider creating a Claude skill (slash command) for it. You invoke it with one command, the steps are predefined, and token usage stays consistent and predictable every time.
+
+See the [Claude Code skills documentation](https://docs.anthropic.com/en/docs/claude-code/slash-commands) to get started.
+
 ### Tell Claude to be efficient
 If you have many queries, say so upfront:
 
