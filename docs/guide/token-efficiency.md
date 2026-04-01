@@ -1,313 +1,90 @@
-# Token Efficiency Guide: Using Claude with Revit MCP Connector
+# Token Efficiency Guide
 
-## Understanding Token Usage
+## The Core Idea
 
-When you use Claude to interact with your Revit model through the MCP connector, every operation consumes tokens from your conversation budget. Understanding how tokens are used helps you work more efficiently and get more done in a single conversation.
-
----
-
-## Token Cost Breakdown
-
-### Initial Connection Cost (High)
-**~48,000 - 50,000 tokens** for the first tool search
-
-When Claude first connects to the Revit MCP connector, it loads:
-- Tool definitions and schemas
-- Parameter specifications and validation rules
-- MCP protocol infrastructure
-- Type definitions and error handling documentation
-- Connection metadata
-
-**This happens once per conversation** and is the largest token expense.
-
-### Subsequent Operations (Low)
-Once connected, individual operations are very efficient:
-- **Simple queries**: 100-500 tokens (e.g., getting user selection)
-- **Data retrieval**: 500-2,000 tokens (e.g., getting parameters from one element)
-- **Bulk operations**: 2,000-5,000 tokens (e.g., getting 91 elements in a room)
-- **Additional tool loads**: 300-1,000 tokens per new tool
+When Claude connects to your Revit model via MCP, it loads tool definitions the first time it needs them. That initial load is the most expensive part of a conversation. Everything after that is relatively cheap.
 
 ---
 
-## Best Practices for Token Efficiency
+## The Most Important Rule
 
-### 1. **Batch Your Work in One Conversation**
+**Do your Revit work in one conversation whenever possible.**
 
-✅ **EFFICIENT** - Single conversation:
-```
-Question 1: Get elements in room 200
-Question 2: Get parameters for element 1234567
-Question 3: Export selected elements to CSV
-Question 4: Check warnings in the model
-Question 5: Get all families used
-...and 10 more questions
+The first time Claude uses an MCP tool in a conversation, it loads the tool schema. Subsequent uses of that tool in the same conversation reuse what's already loaded — no extra cost.
 
-Total cost: 48,000 (initial) + ~20,000 (operations) = 68,000 tokens
-```
-
-❌ **INEFFICIENT** - New conversation each time:
-```
-Conversation 1: Get elements in room 200
-   → Cost: 48,000 + 3,000 = 51,000 tokens
-
-Conversation 2: Get parameters for element 1234567
-   → Cost: 48,000 + 1,500 = 49,500 tokens
-
-Conversation 3: Export to CSV
-   → Cost: 48,000 + 2,000 = 50,000 tokens
-
-Total cost: 150,500 tokens (3x more expensive!)
-```
-
-**Key Takeaway**: Keep your Revit session in one long conversation. The initial ~48k token "connection fee" is paid once, then everything else is cheap.
+Starting a new conversation means loading tools again from scratch.
 
 ---
 
-### 2. **Be Specific in Your Requests**
+## Simple Tips
 
-The more specific you are, the fewer unnecessary tools Claude loads.
+### Be specific in your requests
+Tell Claude exactly what you want. Vague questions cause Claude to explore multiple tools before settling on one.
 
-✅ **SPECIFIC** (Better):
-- "Get elements in room 2177792"
-- "Get the Name parameter from element 1234567"
-- "Export elements 100, 200, 300 to CSV"
+✅ "Get elements in room 2177792"  
+❌ "What can you tell me about rooms?"
 
-❌ **VAGUE** (More expensive):
-- "Show me what tools are available for rooms"
-- "Tell me about Revit elements"
-- "What can you do with the model?"
+### Break complex tasks into steps
+Ask one thing at a time. Each step builds on tools already loaded.
 
-**Why it matters**: Specific requests help Claude load only the exact tool needed. Vague requests force Claude to load multiple tools to explore options.
+✅
+```
+Step 1: "Get all furniture in room 200"
+Step 2: "Get the Family and Type for those elements"
+Step 3: "Export to CSV"
+```
+
+❌ "Get all furniture in every room with all their parameters and export to CSV organized by level"
+
+### Tell Claude to be efficient
+If you have many queries, say so upfront:
+
+> "I have 20 Revit queries to run. Be token-efficient and only load what's needed for each."
 
 ---
 
-### 3. **Ask for One Thing at a Time (Then Build)**
+## What Actually Costs Tokens
 
-Instead of asking one complex multi-part question, break it into steps:
-
-✅ **STEP-BY-STEP**:
-```
-Step 1: "Get all elements in room 200"
-   (Claude loads room tools)
-
-Step 2: "Now get the 'Family and Type' parameter for those furniture elements"
-   (Claude reuses already-loaded tools)
-
-Step 3: "Export this to a CSV file"
-   (Claude only loads export tools when needed)
-```
-
-❌ **ALL AT ONCE**:
-```
-"Get all elements in every room, their parameters, families, 
- types, locations, and export everything to multiple CSVs 
- organized by level and category"
-```
-
-This forces Claude to load many tools at once, some of which might not be needed.
+| Operation | Relative Cost |
+|-----------|--------------|
+| First tool load in a conversation | High (one-time) |
+| Reusing an already-loaded tool | Very low |
+| Simple query (get selection, active view) | Very low |
+| Getting parameters from one element | Low |
+| Getting all elements in a room | Medium |
+| Large data exports | Medium–High |
 
 ---
 
-### 4. **Tell Claude to Be Token-Efficient**
+## Prompt Caching
 
-You can explicitly ask Claude to optimize for tokens:
+Claude supports **prompt caching** at the API level. When the same tool definitions are sent repeatedly, Claude can serve them from cache instead of processing them as fresh input.
 
-**Examples of what to say**:
-- "Be as token-efficient as possible"
-- "Minimize token usage when searching for tools"
-- "I'm going to ask 20 questions - load only what you need for each"
-- "Use limit=1 when searching for tools"
+### Cost model (documented by Anthropic)
 
-Claude will then prioritize efficiency in how it loads tools.
+| Token type | Cost multiplier |
+|------------|----------------|
+| Normal input | 1.0× |
+| Cache write (first time a prefix is cached) | 1.25× |
+| Cache read (reusing a cached prefix) | **0.1×** — 90% cheaper |
 
----
+### Cache TTL
+- Default: **5 minutes** after last use
+- Extendable to **1 hour** via explicit cache control settings
 
-### 5. **Plan Multi-Step Workflows**
+### What this means in practice
 
-If you have a complex workflow, outline it first:
+MCP tool schemas are the same content every conversation — same source, same structure. At the API level, that makes them a good candidate for caching. If the cache is still warm when you start a new conversation, Claude reads the schemas at 10% of normal cost instead of full price.
 
-```
-"I need to:
-1. Get all rooms on Level 2
-2. For each room, get the furniture count
-3. Export the results to CSV
+**However:** Whether Claude Desktop explicitly enables cache_control on MCP tool definitions depends on the platform's implementation. The behavior above is how Anthropic's caching API works — the actual savings you see may vary depending on how Claude Desktop is configured.
 
-Let's start with step 1."
-```
-
-This helps Claude understand the full scope and load tools efficiently.
+### The safe assumption
+Don't rely on cross-conversation caching as your primary strategy. Treat it as a bonus when it kicks in. **Staying in one conversation is always the most predictable and efficient approach.**
 
 ---
 
-## Real-World Example: Token Usage Comparison
+## Bottom Line
 
-### Scenario: Analyzing 5 Different Rooms
-
-**Method A: New conversation for each room** ❌
-```
-Conv 1: Get elements in room 200      → 51,000 tokens
-Conv 2: Get elements in room 201      → 51,000 tokens
-Conv 3: Get elements in room 202      → 51,000 tokens
-Conv 4: Get elements in room 203      → 51,000 tokens
-Conv 5: Get elements in room 204      → 51,000 tokens
-────────────────────────────────────────────────────
-Total: 255,000 tokens
-```
-
-**Method B: One conversation, sequential questions** ✅
-```
-Q1: Get elements in room 200          → 51,000 tokens (initial load)
-Q2: Get elements in room 201          → 3,500 tokens
-Q3: Get elements in room 202          → 3,500 tokens
-Q4: Get elements in room 203          → 3,500 tokens
-Q5: Get elements in room 204          → 3,500 tokens
-────────────────────────────────────────────────────
-Total: 65,000 tokens (4x more efficient!)
-```
-
-**Savings: 190,000 tokens (74% reduction)**
-
----
-
-## Understanding the ~48k Token Initial Cost
-
-You might wonder: "Why is the first tool search so expensive?"
-
-### What Gets Loaded:
-
-When Claude connects to the Revit MCP connector for the first time in a conversation, the system loads:
-
-1. **Tool Schemas** (~3,000-5,000 tokens)
-   - Function names and descriptions
-   - Parameter definitions (name, type, required/optional)
-   - Validation rules (min/max values, allowed options)
-
-2. **MCP Protocol Infrastructure** (~15,000 tokens)
-   - Communication protocol specifications
-   - Request/response format definitions
-   - Connection metadata
-
-3. **Type Definitions** (~10,000 tokens)
-   - Data type specifications (integer, string, array, etc.)
-   - Schema validation rules
-   - JSON Schema standards
-
-4. **Error Handling** (~5,000 tokens)
-   - Error codes and descriptions
-   - Recovery procedures
-   - Debugging information
-
-5. **Examples & Documentation** (~10,000 tokens)
-   - Usage examples
-   - Best practices
-   - Parameter examples
-
-**Total: ~48,000 tokens**
-
-This is a **one-time cost per conversation** that enables reliable, type-safe communication between Claude and your Revit model.
-
----
-
-## Common Mistakes to Avoid
-
-### ❌ Mistake 1: Starting Fresh Conversations
-**Problem**: Reloading the 48k token infrastructure every time
-**Solution**: Keep working in the same conversation
-
-### ❌ Mistake 2: Asking Exploratory Questions
-**Problem**: "What Revit tools do you have?" loads many unnecessary tools
-**Solution**: Ask for what you specifically need
-
-### ❌ Mistake 3: Combining Unrelated Tasks
-**Problem**: "Get room data AND check warnings AND export families" in one request
-**Solution**: Break into separate, sequential questions
-
-### ❌ Mistake 4: Not Planning Ahead
-**Problem**: Asking random questions without a workflow
-**Solution**: Outline your workflow before starting
-
----
-
-## Quick Reference Card
-
-| Operation Type | Approximate Token Cost | Notes |
-|---------------|----------------------|-------|
-| **First tool search** | 48,000-50,000 | One-time per conversation |
-| **Additional tool loads** | 300-1,000 per tool | When new capabilities needed |
-| **Simple queries** | 100-500 | Get selection, get active view |
-| **Single element data** | 500-2,000 | Get parameters from one element |
-| **Bulk operations** | 2,000-5,000 | Get 50-100 elements with data |
-| **Large exports** | 5,000-10,000 | Complex data extraction/export |
-
----
-
-## Token Budget Planning
-
-Most Claude plans have different token budgets per conversation:
-
-### Example Calculation:
-**Starting budget**: 190,000 tokens
-
-**One conversation doing 20 Revit operations**:
-- Initial connection: 48,000 tokens
-- 20 operations @ avg 2,000 tokens each: 40,000 tokens
-- **Total used**: 88,000 tokens
-- **Remaining**: 102,000 tokens ✅ Plenty left!
-
-**Same 20 operations in 20 separate conversations**:
-- 20 conversations × 50,000 avg tokens each: 1,000,000 tokens
-- **Result**: Would exceed budget after ~4 questions ❌
-
----
-
-## Pro Tips
-
-### Tip 1: Keep a "Working Session" Chat
-Create one dedicated conversation for your daily Revit work. Keep it open all day and ask all your questions there.
-
-### Tip 2: Use Descriptive Requests
-Instead of: "Check room 200"
-Say: "Get elements in room 2177792"
-
-The element ID is more precise and helps Claude find the exact tool faster.
-
-### Tip 3: Chain Related Questions
-```
-✅ Good:
-"Get elements in room 200"
-[Claude responds]
-"Now get their Family and Type parameters"
-[Claude responds]
-"Export to CSV"
-```
-
-This reuses loaded tools efficiently.
-
-### Tip 4: Explicitly Request Efficiency
-If you know you'll have many questions, start with:
-"I need to perform 30 Revit queries today. Please optimize for token efficiency."
-
----
-
-## Summary: The Golden Rules
-
-1. **One conversation = One work session** - Never start a new chat unnecessarily
-2. **Be specific, not exploratory** - Ask for exactly what you need
-3. **Sequential, not simultaneous** - One question at a time builds on loaded tools
-4. **Tell Claude your intent** - "Be token-efficient" helps guide behavior
-5. **Plan ahead** - Know your workflow before you start
-
-**Follow these rules and you'll maximize your productivity while minimizing token usage.**
-
----
-
-## Need Help?
-
-If you're unsure about token efficiency for a specific workflow, you can ask Claude:
-- "How many tokens will this operation cost?"
-- "What's the most efficient way to do [task]?"
-- "How should I structure this workflow to minimize tokens?"
-
-Claude can estimate costs and suggest optimizations before you commit to a particular approach.
-
----
+- One long conversation > many short ones
+- Ask for exactly what you need
+- Build on previous steps rather than repeating context
