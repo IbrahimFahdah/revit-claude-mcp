@@ -270,24 +270,59 @@ or supplement other documentation.
 Run these checks via the **RevitClaudeConnector** tools when the user asks
 for a QA/QC audit or self-assessment.
 
-### Check 1 — Level Naming Convention
+### Check 1 — Project Required Parameters
 
-**Rule:** Every level name must match one of these patterns:
-- `[SingleLetter][Integer]_[OptionalText]` — e.g. `F1_FIRST FLOOR FFL`, `B2_BASEMENT 2 FFL`
-- `GR_[OptionalText]` — e.g. `GR_GROUND FLOOR`
-- `RF_[OptionalText]` — e.g. `RF_ROOF`
+**Rule:** The Revit project (IfcProject / IfcBuilding / IfcSite level) must have
+all of the following parameters present and filled with a non-empty, non-null value:
 
-**Regex:** `^([A-Za-z]\d+|GR|RF)_.*$`
+| Parameter | Fail Condition |
+|---|---|
+| `ParcelId` | Empty or null |
+| `BIMStandardVersion` | Empty or null |
+| `GateLevel` | Empty, null, or zero |
+| `BuildingNum` | Empty, null, or zero |
+| `Occupancy` | Empty or null |
+| `OccupancyUse` | Empty or null |
+| `OccupancyUsageCode` | Empty or null |
+| `TotalBuildupArea` | Empty, null, or zero |
+| `TotalGrossArea` | Empty, null, or zero |
+| `TotalFloorGrossArea` | Empty, null, or zero |
+| `TotalNetArea` | Empty, null, or zero |
 
 **Workflow:**
-1. `get_category_by_keyword` → keyword: `"level"`
-2. `get_elements_by_category` → get all level element IDs
-3. `get_parameter_value_for_element_ids` → retrieve `Name` parameter
-4. Validate each name against the regex
-5. Record PASS / FAIL per level
+
+1. `get_project_info` → retrieve the project element ID (this returns the single
+   IfcProject/building info element; note its element ID for subsequent calls)
+2. Call `get_parameter_value_for_element_ids` once per parameter, using the
+   project element ID retrieved in step 1, for each of the 11 parameters:
+   - `ParcelId`
+   - `BIMStandardVersion`
+   - `GateLevel`
+   - `BuildingNum`
+   - `Occupancy`
+   - `OccupancyUse`
+   - `OccupancyUsageCode`
+   - `TotalBuildupArea`
+   - `TotalGrossArea`
+   - `TotalFloorGrossArea`
+   - `TotalNetArea`
+3. For each parameter apply the fail condition from the table above:
+   - **PASS** — value is present and non-empty (and non-zero for numeric fields)
+   - **FAIL** — value is missing, null, empty string, `"0"`, or `0`
+4. Record one CSV row per failing parameter.
+5. If all 11 parameters pass → record a single PASS summary row.
+
+**Batching note:** All `get_parameter_value_for_element_ids` calls share the
+same single project element ID — batch them to minimise round-trips.
+
+**CSV output rows (example):**
+
+```
+Project Parameters, [projectElementId], [ProjectName], ParcelId, Value is missing or empty, FAIL
+Project Parameters, [projectElementId], [ProjectName], GateLevel, Value is missing or zero, FAIL
+```
 
 ---
-
 ### Check 2 — Level Required Parameters
 
 **Rule:** Every level must have all four area parameters present and filled
@@ -323,7 +358,25 @@ A parameter **fails** if its value is: empty / null / 0 / "0" / whitespace only.
 
 ---
 
-### Check 3 — Space (Room) Parameters
+### Check 3 — Level Naming Convention
+
+**Rule:** Every level name must match one of these patterns:
+- `[SingleLetter][Integer]_[OptionalText]` — e.g. `F1_FIRST FLOOR FFL`, `B2_BASEMENT 2 FFL`
+- `GR_[OptionalText]` — e.g. `GR_GROUND FLOOR`
+- `RF_[OptionalText]` — e.g. `RF_ROOF`
+
+**Regex:** `^([A-Za-z]\d+|GR|RF)_.*$`
+
+**Workflow:**
+1. `get_category_by_keyword` → keyword: `"level"`
+2. `get_elements_by_category` → get all level element IDs
+3. `get_parameter_value_for_element_ids` → retrieve `Name` parameter
+4. Validate each name against the regex
+5. Record PASS / FAIL per level
+
+---
+
+### Check 4 — Space (Room) Parameters
 
 **Rule:** Every space must have non-empty values for:
 - `SpaceUsageCode` — must be a valid DM Space Usage Code
@@ -341,7 +394,7 @@ A parameter **fails** if its value is: empty / null / 0 / "0" / whitespace only.
 
 ---
 
-### Check 4 — IFC Type Mapping (Spot Check)
+### Check 5 — IFC Type Mapping (Spot Check)
 
 When the user requests an IFC mapping check:
 
