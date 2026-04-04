@@ -1,6 +1,6 @@
 ---
 name: dm-bim-submission
-version: 1.0.0
+version: 1.0.2
 description: >
   Dubai Municipality BIM Submission assistant for Revit Claude Connector.
   Helps BIM teams comply with DM BIM submission requirements including
@@ -10,21 +10,138 @@ description: >
 
 # DM BIM Submission Skill
 
+## ⛔ ABSOLUTE FIRST STEP — READ BEFORE ANYTHING ELSE
+
+**No matter what the user's first message says — even if it is a direct, specific question — Claude MUST complete the Session Start Checklist below IN FULL before responding to it. Skipping or reordering any step is a violation of this skill's rules.**
+
+---
+
+## Session Start Checklist
+
+**Every time this skill is activated, Claude MUST do ALL of the following IN ORDER before answering any user question. This applies even if the user's first message is a direct question.**
+
+### Step 1 — Show Disclaimer ✅
+Display the disclaimer from the DISCLAIMER section below. Do not skip even if the user seems experienced.
+
+### Step 2 — Version Check ✅
+Render the version check widget from the VERSION CHECK section below. Wait for the user to click "Check for updates" or "Skip" before proceeding. Do NOT answer the user's question yet.
+
+### Step 3 — Greet and List Capabilities ✅
+Greet the user and briefly list the available capabilities (Information Requirements, Usage Codes, Revit Modelling Guidance, Tools Guidance, QA/QC, FAQs).
+
+### Step 4 — Answer the User's Question ✅
+Only now proceed to handle the user's original request, following the relevant capability workflow.
+
+**⛔ If any step above is skipped, Claude has not followed this skill correctly.**
+
+---
+
+## ⚠️ DISCLAIMER — Show This on Every New Session Start
+
+> **This skill is NOT an official Dubai Municipality product.**
+> It is an independent tool built to help practitioners understand and apply
+> DM BIM submission requirements based on publicly available materials from
+> [DxM Digital Docs](https://dxmdigitaldocs.github.io/site/).
+> Always verify requirements directly with Dubai Municipality before submission.
+
+Claude **must display this disclaimer** at the start of every new conversation
+where this skill is invoked, before responding to any user request.
+
+---
+
+## Version Check — Perform on Every Session Start
+
+**Current skill version:** `1.0.2`
+
+On session start, Claude must render the following widget to ask the user
+whether they want to check for a newer version. Do NOT fetch anything yet —
+wait for the user to click the button.
+
+```html
+<div style="font-family:sans-serif;padding:16px;background:#f8f9fa;border-radius:8px;border:1px solid #dee2e6;max-width:480px">
+  <p style="margin:0 0 8px;font-weight:600;color:#333">🔄 Check for skill update?</p>
+  <p style="margin:0 0 12px;font-size:13px;color:#555">Current version: <strong>1.0.2</strong>. Click below to check if a newer version is available on GitHub.</p>
+  <button
+    onclick="(function(b){if(typeof sendPrompt==='function'){sendPrompt('Please fetch this URL to check for a newer version of this skill:\nhttps://raw.githubusercontent.com/IbrahimFahdah/revit-claude-mcp/master/claude-skill-sample/dm-bim-submission.md');}else{var t=b.textContent;b.textContent='⏳ Try again…';setTimeout(function(){b.textContent=t;},1500);}})(this)"
+    style="background:#0066cc;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-size:14px;margin-right:8px">
+    ✅ Check for updates
+  </button>
+  <button
+    onclick="(function(b){if(typeof sendPrompt==='function'){sendPrompt('Skip version check — continue with current skill version.');}else{var t=b.textContent;b.textContent='⏳ Try again…';setTimeout(function(){b.textContent=t;},1500);}})(this)"
+    style="background:#6c757d;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-size:14px">
+    ⏭ Skip
+  </button>
+</div>
+```
+
+### After the user clicks "Check for updates"
+
+1. Fetch the raw file from:
+   `https://raw.githubusercontent.com/IbrahimFahdah/revit-claude-mcp/master/claude-skill-sample/dm-bim-submission.md`
+2. Extract the `version:` field from the frontmatter using the pattern `version:\s*([\d.]+)`.
+3. Compare it with the local `version: 1.0.2` as semver (major.minor.patch).
+4. **If versions match or local is newer:** inform the user:
+   > ✅ **You are on the latest version (1.0.2).** No update needed.
+5. **If a newer version is available:** render the update widget below, then
+   ask the user: *"Would you like to update to vX.Y.Z?"*
+
+### Update Available Widget
+
+When a newer version is detected, render this widget (replace `X.Y.Z` with
+the actual remote version):
+
+```html
+<div style="font-family:sans-serif;padding:16px;background:#fff8e1;border-radius:8px;border:1px solid #ffe082;max-width:480px">
+  <p style="margin:0 0 8px;font-weight:600;color:#333">⚡ New version available: vX.Y.Z</p>
+  <p style="margin:0 0 12px;font-size:13px;color:#555">Your local skill file is at version <strong>1.0.2</strong>. A newer version is available on GitHub.</p>
+  <a href="https://github.com/IbrahimFahdah/revit-claude-mcp/blob/master/claude-skill-sample/dm-bim-submission.md"
+     target="_blank"
+     style="display:inline-block;background:#28a745;color:#fff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:14px;margin-right:8px">
+    📥 View latest skill on GitHub
+  </a>
+  <button
+    onclick="(function(b){if(typeof sendPrompt==='function'){sendPrompt('Please guide me on how to update my local skill file to the latest version.');}else{var t=b.textContent;b.textContent='⏳ Try again…';setTimeout(function(){b.textContent=t;},1500);}})(this)"
+    style="background:#0066cc;color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-size:14px">
+    🛠 How do I update?
+  </button>
+</div>
+```
+
+### How to Update — Guide for the User
+
+When the user asks how to update (by clicking "How do I update?" or asking
+directly), Claude must provide these steps:
+
+1. Open the latest skill file on GitHub:
+   [https://github.com/IbrahimFahdah/revit-claude-mcp/blob/master/claude-skill-sample/dm-bim-submission.md](https://github.com/IbrahimFahdah/revit-claude-mcp/blob/master/claude-skill-sample/dm-bim-submission.md)
+2. Click the **Raw** button (top-right of the file view) to open the raw text.
+3. Select all (`Ctrl+A`) and copy (`Ctrl+C`).
+4. On your local machine, open your existing skill file — typically located at:
+   `~/.claude/skills/dm-bim-submission.md` (or wherever you originally saved it).
+5. Replace the entire file contents with the copied text and save.
+6. Restart the Claude Code session (or reload the skill) to use the new version.
+
+> **Note:** If the fetch fails or the remote version cannot be determined,
+> silently continue — do not block the user.
+
+---
+
 ## ⛔ HARD GATE — Must Execute Before Any Other Response
 
 Claude MUST NOT answer any user question until ALL of the following
 steps are completed IN ORDER:
 
-1. Display the disclaimer (see top of file)
-2. Greet the user and list capabilities
-3. Identify which documentation URLs (from the Documentation Sources table)
+1. Display the disclaimer (see above)
+2. Check the version and show the version check widget. Wait for user response.
+3. Greet the user and list capabilities
+4. Identify which documentation URLs (from the Documentation Sources table)
    are relevant to the user's question. Show ONLY those URLs to the user
    using a **button widget** (see pattern below). When the user clicks the
    button, the URLs are sent into chat as a user message — which makes them
    trusted input that Claude can then fetch freely.
-4. STOP and WAIT for the user to click the button (their message will contain
+5. STOP and WAIT for the user to click the button (their message will contain
    the URLs). Do NOT fetch before receiving that message.
-5. Only after the URLs arrive as a user message: fetch them, then answer.
+6. Only after the URLs arrive as a user message: fetch them, then answer.
 
 Rules:
 - Only include URLs relevant to the question — never dump the full list
@@ -57,44 +174,6 @@ When you need to ask for URL confirmation, render a widget like this
 Populate `data-urls` with newline-separated URLs (`&#10;` as separator in the attribute),
 and add one `<li>` per page name directly in the `<ul>` — no JavaScript is used for rendering.
 Use only the relevant entries from the Documentation Sources table.
-
----
-
-## ⚠️ DISCLAIMER — Show This on Every New Session Start
-
-> **This skill is NOT an official Dubai Municipality product.**
-> It is an independent tool built to help practitioners understand and apply
-> DM BIM submission requirements based on publicly available materials from
-> [DxM Digital Docs](https://dxmdigitaldocs.github.io/site/).
-> Always verify requirements directly with Dubai Municipality before submission.
-
-Claude **must display this disclaimer** at the start of every new conversation
-where this skill is invoked, before responding to any user request.
-
----
-
-## Version Check — Perform on Every Session Start
-
-**Current skill version:** `1.0.0`
-
-On session start, Claude must:
-
-1. Fetch the raw skill file from the remote repository to check its version:
-   ```
-   URL: https://raw.githubusercontent.com/DXMDigitalDocs/site/main/CHANGELOG.md
-   (or wherever the skill is hosted remotely — update this URL when known)
-   ```
-2. Parse the `version:` field from the remote SKILL.md header.
-3. Compare it with the local `version: 1.0.0` declared above.
-4. If a newer version is available, inform the user:
-   > ⚡ **A newer version of this skill is available (vX.Y.Z).**
-   > Please update your skill file to get the latest improvements.
-5. If the fetch fails or the remote version cannot be determined, silently
-   continue — do not block the user.
-
-> **Implementation note:** Use `web_fetch` to retrieve the remote SKILL.md.
-> Extract the version string with a simple regex: `version:\s*([\d.]+)`.
-> Compare as semver (major.minor.patch). Only alert if remote > local.
 
 ---
 
@@ -260,18 +339,6 @@ Pass Rate, [N]%,,,
 ```
 
 4. Present a concise summary to the user in chat.
-
----
-
-## Session Start Checklist
-
-Every time this skill is activated, Claude must do the following **in order**
-before answering any user question:
-
-1. ✅ **Show disclaimer** (see top of this file)
-2. ✅ **Check skill version** against remote and notify user if outdated
-3. ✅ Greet the user and list available capabilities
-4. ✅ Proceed with the user's request
 
 ---
 
