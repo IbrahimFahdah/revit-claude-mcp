@@ -39,7 +39,7 @@ Only now proceed to handle the user's original request, following the relevant c
 ## ⚠️ DISCLAIMER — Show This on Every New Session Start
 
 > **This skill is NOT an official Dubai Municipality product.**
-> It is an independent tool built to help practitioners understand and apply
+> It is a community effort tool built to help Revit users understand and apply
 > DM BIM submission requirements based on publicly available materials from
 > [DxM Digital Docs](https://dxmdigitaldocs.github.io/site/).
 > Always verify requirements directly with Dubai Municipality before submission.
@@ -286,7 +286,44 @@ for a QA/QC audit or self-assessment.
 4. Validate each name against the regex
 5. Record PASS / FAIL per level
 
-### Check 2 — Space (Room) Parameters
+---
+
+### Check 2 — Level Required Parameters
+
+**Rule:** Every level must have all four area parameters present and filled
+with a non-empty, non-zero numeric value:
+
+| Parameter | Description |
+|---|---|
+| `TotalBuildupArea` | Total built-up area for the level |
+| `TotalFloorGrossArea` | Total floor gross area for the level |
+| `TotalGrossArea` | Total gross area for the level |
+| `TotalNetArea` | Total net area for the level |
+
+A parameter **fails** if its value is: empty / null / 0 / "0" / whitespace only.
+
+**Workflow:**
+
+1. `get_category_by_keyword` → keyword: `"level"` → get the category ID
+2. `get_elements_by_category` → get all level element IDs
+3. `get_parameter_value_for_element_ids` → retrieve `Name` (to identify each level in the report)
+4. For each of the four required parameters, call `get_parameter_value_for_element_ids` with the same level IDs:
+   - parameter name: `TotalBuildupArea`
+   - parameter name: `TotalFloorGrossArea`
+   - parameter name: `TotalGrossArea`
+   - parameter name: `TotalNetArea`
+5. For each level × parameter combination, apply the rule:
+   - **PASS** — value exists and is a non-zero number
+   - **FAIL** — value is missing, null, empty string, `"0"`, or `0`
+6. Record one row per failing level × parameter pair in the QA/QC report.
+7. If all four parameters are filled for all levels → record a single PASS summary row.
+
+**Batching note:** Make all five `get_parameter_value_for_element_ids` calls
+(Name + 4 parameters) before evaluating results, to minimise round-trips.
+
+---
+
+### Check 3 — Space (Room) Parameters
 
 **Rule:** Every space must have non-empty values for:
 - `SpaceUsageCode` — must be a valid DM Space Usage Code
@@ -302,7 +339,9 @@ for a QA/QC audit or self-assessment.
 6. Validate each space — check for empty values and code validity
 7. Record PASS / FAIL per space
 
-### Check 3 — IFC Type Mapping (Spot Check)
+---
+
+### Check 4 — IFC Type Mapping (Spot Check)
 
 When the user requests an IFC mapping check:
 
@@ -322,23 +361,28 @@ After running any QA/QC checks:
 2. Create `DM_QAQC_Report.csv` with columns:
 
 ```
-Check Type, Element ID, Element Name, Issue, Status
-Level Convention, 12345, F_Ground, Invalid naming pattern — missing integer after letter, FAIL
-Space Parameters, 67890, ROOM 101, SpaceUsageCode is empty, FAIL
-Space Parameters, 67891, ROOM 102, description not in Space Usage Codes list, FAIL
+Check Type, Element ID, Element Name, Parameter, Issue, Status
+Level Naming, 12345, F_Ground, Name, Invalid naming pattern — missing integer after letter, FAIL
+Level Parameters, 12345, F1_FIRST FLOOR, TotalBuildupArea, Value is missing or zero, FAIL
+Level Parameters, 12345, F1_FIRST FLOOR, TotalNetArea, Value is missing or zero, FAIL
+Space Parameters, 67890, ROOM 101, SpaceUsageCode, SpaceUsageCode is empty, FAIL
+Space Parameters, 67891, ROOM 102, description, description not in Space Usage Codes list, FAIL
 ```
 
 3. Add summary statistics at the end of the CSV:
 
 ```
-,,,,
-SUMMARY,,,,
-Total Checks, [N],,, 
-Failures, [N],,,
-Pass Rate, [N]%,,,
+,,,,,
+SUMMARY,,,,,
+Total Checks, [N],,,,
+Failures, [N],,,,
+Pass Rate, [N]%,,,,
 ```
 
 4. Present a concise summary to the user in chat.
+
+**Note:** The CSV now includes a `Parameter` column (6 columns total) to clearly
+identify which parameter failed on which element.
 
 ---
 
