@@ -360,19 +360,49 @@ A parameter **fails** if its value is: empty / null / 0 / "0" / whitespace only.
 
 ### Check 3 — Level Naming Convention
 
-**Rule:** Every level name must match one of these patterns:
-- `[SingleLetter][Integer]_[OptionalText]` — e.g. `F1_FIRST FLOOR FFL`, `B2_BASEMENT 2 FFL`
-- `GR_[OptionalText]` — e.g. `GR_GROUND FLOOR`
-- `RF_[OptionalText]` — e.g. `RF_ROOF`
+**Rule:** Every level name must follow the DM BIM Standard (section 7.4.1) two-field format:
 
-**Regex:** `^([A-Za-z]\d+|GR|RF)_.*$`
+```
+[LevelAbbreviation]_[LevelIdentification]
+```
+
+- Fields are separated by a single underscore `_`.
+- The **Level Abbreviation** must be ALL UPPER CASE.
+- The **Level Identification** must be ALL UPPER CASE.
+
+**Valid Level Abbreviations** (as defined in Table 9 & Table 10 of the standard):
+
+| Abbreviation | Level Type | Example Full Name |
+|---|---|---|
+| `B[n]` | Basement (n = 1, 2, 3…) | `B1_BASEMENT1` |
+| `RD` | Road Level | `RD_ROADLEVEL` |
+| `GA` | Gate Level | `GA_GATELEVEL` |
+| `GR` | Ground Floor | `GR_GROUNDFLOOR` |
+| `P[n]` | Podium (n = 1, 2, 3…) | `P1_PODIUM1` |
+| `M[n]` | Mezzanine (n = 1, 2, 3…) | `M1_MEZZANINE1` |
+| `F[n]` | Floor (n = 1, 2, 3…) | `F1_FLOOR1` |
+| `S[n]` | Service Level (n = 1, 2, 3…) | `S1_SERVICE1` |
+| `RF` | Roof | `RF_ROOF` |
+
+**Validation rules:**
+- The abbreviation part (before `_`) must match one of the patterns above — `B`, `P`, `M`, `F`, `S` followed by one or more digits, or exactly `RD`, `GA`, `GR`, `RF`.
+- Both the abbreviation and identification parts must be non-empty.
+- No spaces are allowed in the abbreviation part.
+- The identification part (after `_`) must not be empty.
+- Abbreviation must be upper case only.
+
+**Regex:** `^(B\d+|RD|GA|GR|P\d+|M\d+|F\d+|S\d+|RF)_[A-Z0-9 ]+$`
 
 **Workflow:**
 1. `get_category_by_keyword` → keyword: `"level"`
 2. `get_elements_by_category` → get all level element IDs
 3. `get_parameter_value_for_element_ids` → retrieve `Name` parameter
-4. Validate each name against the regex
-5. Record PASS / FAIL per level
+4. For each level name:
+   - Split on the first `_` — if no `_` exists → **FAIL** (missing separator)
+   - Check the abbreviation part matches the regex prefix — if not → **FAIL** (invalid abbreviation)
+   - Check the identification part is non-empty and upper case — if not → **FAIL** (missing or invalid identification)
+   - If all pass → **PASS**
+5. Record PASS / FAIL per level, including the actual name and the specific reason for failure
 
 ---
 
